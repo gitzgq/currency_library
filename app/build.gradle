@@ -1,0 +1,57 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 29
+    defaultConfig {
+        applicationId "com.zgq.common.base"
+        minSdkVersion 19
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    api 'com.google.android.material:material:1.0.0'
+    api 'androidx.recyclerview:recyclerview:1.0.0'
+    api 'androidx.appcompat:appcompat:1.0.2'
+    api 'androidx.legacy:legacy-support-v4:1.0.0'
+    // 解决65536
+    api 'androidx.multidex:multidex:2.0.0'
+
+    // 网络请求相关
+    api 'com.squareup.retrofit2:retrofit:2.6.1'
+    api 'com.squareup.retrofit2:converter-gson:2.6.1'
+    api 'com.squareup.okhttp3:logging-interceptor:4.1.0'
+    api 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    // 图片Glide（https://muyangmin.github.io/glide-docs-cn/doc/download-setup.html）
+    api ("com.github.bumptech.glide:glide:4.9.0") {
+        exclude group: "com.android.support"
+    }
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+
+    // 沉浸式(https://github.com/gyf-dev/ImmersionBar)
+    api 'com.gyf.immersionbar:immersionbar:3.0.0-beta07'
+
+    // 最基础的架构，仅提供了系统默认的图片选择器和拍照功能(https://github.com/qingmei2/RxImagePicker)
+    api 'com.github.qingmei2:rximagepicker:2.5.1'
+
+    // EventBus
+    api 'org.greenrobot:eventbus:3.1.1'
+
+}

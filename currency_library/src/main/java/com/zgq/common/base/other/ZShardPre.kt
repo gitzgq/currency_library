@@ -3,6 +3,9 @@ package com.zgq.common.base.other
 import android.content.Context
 import android.content.SharedPreferences
 
+/**
+ * SharedPreferences 管理类
+ */
 object ZShardPre{
 
     // 名称

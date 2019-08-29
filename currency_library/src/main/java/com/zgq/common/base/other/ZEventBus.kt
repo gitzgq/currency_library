@@ -3,14 +3,14 @@ package com.zgq.common.base.other
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import org.greenrobot.eventbus.EventBus
-import java.util.*
 
+/**
+ * EventBus 管理类
+ */
 class ZEventBus {
+
     companion object{
         val instence : ZEventBus by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) { ZEventBus() }
-
-        /** 事件ID-测试 */
-        val E_100 : Int = 100
     }
 
     /**

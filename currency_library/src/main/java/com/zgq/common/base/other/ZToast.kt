@@ -4,6 +4,9 @@ import android.content.Context
 import android.view.Gravity
 import android.widget.Toast
 
+/**
+ * 吐司  管理类
+ */
 object ZToast {
 
     private var toast : Toast? = null

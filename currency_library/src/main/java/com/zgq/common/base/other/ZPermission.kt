@@ -10,9 +10,11 @@ import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
-object ZPermission {
+/**
+ * 权限 管理类
+ */
 
-    val STORAGE : Array<String> = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+object ZPermission {
 
     val REQUEST_CODE : Int = 1000
 

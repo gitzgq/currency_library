@@ -1,5 +1,8 @@
 package com.zgq.common.base.other
 
+/**
+ * 字符串 管理类
+ */
 object ZStringUtil {
 
     /**

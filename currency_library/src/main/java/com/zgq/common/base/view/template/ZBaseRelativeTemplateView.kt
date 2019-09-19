@@ -3,11 +3,10 @@ package com.zgq.common.base.view.template
 import android.content.Context
 import android.os.Bundle
 import android.util.AttributeSet
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.fragment.app.DialogFragment
 
-open class BaseRelativeTemplateView : RelativeLayout, BaseTemplateI{
+open class ZBaseRelativeTemplateView : RelativeLayout, ZBaseTemplateI{
     /** 上下文  */
     var mContext: Context
 
@@ -42,22 +41,25 @@ open class BaseRelativeTemplateView : RelativeLayout, BaseTemplateI{
     /** 销毁 */
     open fun onDetached(){}
 
+    override fun setData(position: Int) {
+    }
+
     override fun setData(bundle: Bundle) {
     }
 
-    override fun setData(any: Any) {
+    override fun setData(any: Any?) {
     }
 
-    override fun setData(any: Any, position: Int) {
+    override fun setData(any: Any?, position: Int) {
     }
 
-    override fun setData(any: Any, bundle: Bundle) {
+    override fun setData(any: Any?, bundle: Bundle?) {
     }
 
-    override fun setData(any: Any, position: Int, bundle: Bundle) {
+    override fun setData(any: Any?, position: Int, bundle: Bundle?) {
     }
 
-    override fun setData(bundle: Bundle, dialog: DialogFragment, dialogClickListener: OnDialogClickListener) {
+    override fun setData(bundle: Bundle, dialog: DialogFragment?, dialogClickListener: ZOnDialogClickListener?) {
     }
 
 }

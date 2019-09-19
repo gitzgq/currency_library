@@ -19,7 +19,7 @@ class ZGlide{
         }
     }
 
-    private val DEFAULT_IMG : Int = Color.GRAY // 默认图片
+    private val DEFAULT_IMG : Int = Color.WHITE // 默认图片
     private val ROUND_SIZE : Int = 5 // 圆角大小（dp）
     private val TYPE_DEFAULT : Int = 1 // 加载直角图片
     private val TYPE_ROUND : Int = 2 // 加载圆角图片
@@ -106,7 +106,7 @@ class ZGlide{
     /**
      * 执行加载图片的方法
      */
-    fun glide(context: Context?, img: ImageView?, obj: Any, defaultImg: Int, cache: Boolean, type: Int, roundSize: Int, roundType: ZRoundTransformation.CornerType?){
+    private fun glide(context: Context?, img: ImageView?, obj: Any, defaultImg: Int, cache: Boolean, type: Int, roundSize: Int, roundType: ZRoundTransformation.CornerType?){
         if(null == context || null == img || null == obj){
             return
         }
@@ -115,7 +115,7 @@ class ZGlide{
         options.placeholder(defaultImg)
         // 是否要缓存
         if(cache){
-            options.diskCacheStrategy(DiskCacheStrategy.RESOURCE) // 只缓存加载的图片
+            options.diskCacheStrategy(DiskCacheStrategy.ALL) // 缓存原数据、加载之后的图片
         }else{
             options.skipMemoryCache(true) // 不使用内存缓存
             options.diskCacheStrategy(DiskCacheStrategy.NONE) // 不使用磁盘缓存

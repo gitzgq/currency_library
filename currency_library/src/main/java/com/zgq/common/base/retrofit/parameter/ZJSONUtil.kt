@@ -7,10 +7,10 @@ import org.json.JSONObject
 /**
  * JSON拼接管理类
  */
-class JSONUtil {
+class ZJSONUtil {
 
-    val instence : JSONUtil by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
-        JSONUtil()
+    val instence : ZJSONUtil by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+        ZJSONUtil()
     }
 
     /**

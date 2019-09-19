@@ -8,11 +8,11 @@ import java.io.File
 /**
  * 接口参数管理类
  */
-class RequestParameter{
+class ZRequestParameter{
 
     companion object{
-        val instence : RequestParameter by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
-            RequestParameter()
+        val instence : ZRequestParameter by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+            ZRequestParameter()
         }
     }
 

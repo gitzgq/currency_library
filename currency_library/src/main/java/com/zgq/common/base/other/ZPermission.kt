@@ -22,7 +22,7 @@ object ZPermission {
      * 检查权限 有：直接返回true  否：返回false且请求权限
      */
     fun checkPermission(context: Context?, permissions : Array<String>?, requestCode : Int) : Boolean{
-        if(null == context || context !is Activity ||null == permissions || permissions.isEmpty()){
+        if(null == context || context !is Activity || null == permissions || permissions.isEmpty()){
             return false
         }
 

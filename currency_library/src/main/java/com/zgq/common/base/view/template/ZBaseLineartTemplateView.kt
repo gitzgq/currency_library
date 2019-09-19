@@ -6,7 +6,8 @@ import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 
-open abstract class BaseLineartTemplateView : LinearLayout, BaseTemplateI{
+open class ZBaseLineartTemplateView : LinearLayout, ZBaseTemplateI{
+
     /** 上下文  */
     var mContext: Context
 
@@ -41,23 +42,25 @@ open abstract class BaseLineartTemplateView : LinearLayout, BaseTemplateI{
     /** 销毁 */
     fun onDetached(){}
 
+    override fun setData(position: Int) {
+    }
 
     override fun setData(bundle: Bundle) {
     }
 
-    override fun setData(any: Any) {
+    override fun setData(any: Any?) {
     }
 
-    override fun setData(any: Any, position: Int) {
+    override fun setData(any: Any?, position: Int) {
     }
 
-    override fun setData(any: Any, bundle: Bundle) {
+    override fun setData(any: Any?, bundle: Bundle?) {
     }
 
-    override fun setData(any: Any, position: Int, bundle: Bundle) {
+    override fun setData(any: Any?, position: Int, bundle: Bundle?) {
     }
 
-    override fun setData(bundle: Bundle, dialog: DialogFragment, dialogClickListener: OnDialogClickListener) {
+    override fun setData(bundle: Bundle, dialog: DialogFragment?, dialogClickListener: ZOnDialogClickListener?) {
     }
 
 }

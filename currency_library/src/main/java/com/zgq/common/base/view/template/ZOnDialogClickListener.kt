@@ -1,5 +1,5 @@
 package com.zgq.common.base.view.template
 
-interface OnDialogClickListener {
+interface ZOnDialogClickListener {
     fun onClick(ang : Any)
 }

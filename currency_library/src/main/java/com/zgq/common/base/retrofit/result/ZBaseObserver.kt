@@ -7,7 +7,7 @@ import io.reactivex.disposables.Disposable
 /**
  * 接收下发的数据 统一管理类
  */
-abstract class BaseObserver<T> : Observer<ZBaseBean<T>> {
+abstract class ZBaseObserver<T> : Observer<ZBaseBean<T>> {
 
     override fun onSubscribe(d: Disposable) {
         disposable(d)
@@ -18,7 +18,7 @@ abstract class BaseObserver<T> : Observer<ZBaseBean<T>> {
             onError(-1, "下发的数据格式不正确")
             return
         }
-        if (baseBean?.code == 0 || baseBean?.code == 1) {
+        if (baseBean?.code == 0) {
             if (null != baseBean.model) {
                 onSuccess(baseBean.model)
                 return

@@ -1,10 +1,8 @@
 package com.zgq.common.base.mvp
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.gyf.immersionbar.ImmersionBar
-import com.zgq.common.base.R
 import com.zgq.common.base.other.ZEventBus
 import com.zgq.common.base.other.ZImmersionBar
 

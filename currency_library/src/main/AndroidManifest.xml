@@ -1,2 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.zgq.common.base"/>
+          package="com.zgq.common.base">
+    <!--网络权限-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!--它可以监听用户的连接状态并在用户重新连接到网络时重启之前失败的请求-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!--存储权限-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+</manifest>

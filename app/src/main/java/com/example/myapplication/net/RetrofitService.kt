@@ -1,6 +1,6 @@
 package com.example.myapplication.net
 
-import com.example.myapplication.HomepageBannerBean
+import com.example.myapplication.bean.Template101Bean
 import com.zgq.common.base.data.ZBaseBean
 import io.reactivex.Observable
 import retrofit2.http.GET
@@ -12,6 +12,6 @@ interface RetrofitService {
      * 使用@Field、@FieldMap,需要使用 @FormUrlEncoded 标记
      */
 
-    @GET("Home/Banner")
-    fun load(): Observable<ZBaseBean<ArrayList<HomepageBannerBean>>>
+    @GET(RequestUrl.URL_HOME_PAGE_BANNER)
+    fun loadBanner(): Observable<ZBaseBean<MutableList<Template101Bean>>>
 }

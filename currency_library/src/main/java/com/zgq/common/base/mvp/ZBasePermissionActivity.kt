@@ -16,7 +16,8 @@ open abstract class ZBasePermissionActivity<P : ZBasePresenter<*>> : ZBaseActivi
             if(size <= 0){
                 return
             }
-            for(index in 0..size){
+            // 0..size 包含size    0 until size 不包含size
+            for(index in 0 until size){
                 if(grantResults[index] != PackageManager.PERMISSION_GRANTED) {// 拒绝
                     if(ZPermission.showPermission(this, permissions[index])){// 没有勾选 不再提示
                         ZPermission.requestPermission(this, permissions, requestCode)

@@ -8,9 +8,10 @@ import org.json.JSONObject
  * JSON拼接管理类
  */
 class ZJSONUtil {
-
-    val instence : ZJSONUtil by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
-        ZJSONUtil()
+    companion object {
+        val instence: ZJSONUtil by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+            ZJSONUtil()
+        }
     }
 
     /**

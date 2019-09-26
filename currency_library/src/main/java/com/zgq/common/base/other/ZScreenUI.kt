@@ -94,4 +94,23 @@ object ZScreenUI{
 
     }
 
+    /**
+     * 获得状态栏的高度
+     *
+     * @param context
+     * @return
+     */
+    fun getStatusHeight(context: Context?): Int {
+        if (null == context) {
+            return 0
+        }
+        var result = 0
+        val res = context.resources
+        val resourceId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0) {
+            result = res.getDimensionPixelSize(resourceId)
+        }
+        return result
+    }
+
 }

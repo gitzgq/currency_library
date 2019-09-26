@@ -58,6 +58,78 @@ object ZShardPre{
         return preferences?.getString(key, defaultValue) ?: ""
     }
 
+    /**
+     * 获取Int类型的数据
+     */
+    fun getInt(context: Context?, key : String) : Int{
+        return getInt(context, key, 0)
+    }
+
+    /**
+     * 获取Int类型的数据
+     */
+    fun getInt(context: Context?, key : String, defaultValue : Int) : Int{
+        if(null == context || ZStringUtil.isEmpty(key)){
+            return 0
+        }
+        val preferences = preferences(context)
+        return preferences?.getInt(key, defaultValue) ?: 0
+    }
+
+    /**
+     * 获取Long类型的数据
+     */
+    fun getLong(context: Context?, key : String) : Long{
+        return getLong(context, key, 0)
+    }
+
+    /**
+     * 获取Long类型的数据
+     */
+    fun getLong(context: Context?, key : String, defaultValue : Long) : Long{
+        if(null == context || ZStringUtil.isEmpty(key)){
+            return 0
+        }
+        val preferences = preferences(context)
+        return preferences?.getLong(key, defaultValue) ?: 0
+    }
+
+    /**
+     * 获取Boolean类型的数据
+     */
+    fun getBoolean(context: Context?, key : String) : Boolean{
+        return getBoolean(context, key, false)
+    }
+
+    /**
+     * 获取Boolean类型的数据
+     */
+    fun getBoolean(context: Context?, key : String, defaultValue : Boolean) : Boolean{
+        if(null == context || ZStringUtil.isEmpty(key)){
+            return false
+        }
+        val preferences = preferences(context)
+        return preferences?.getBoolean(key, defaultValue) ?: false
+    }
+
+    /**
+     * 获取Float类型的数据
+     */
+    fun getFloat(context: Context?, key : String) : Float{
+        return getFloat(context, key, 0.0F)
+    }
+
+    /**
+     * 获取Float类型的数据
+     */
+    fun getFloat(context: Context?, key : String, defaultValue : Float) : Float{
+        if(null == context || ZStringUtil.isEmpty(key)){
+            return 0.0F
+        }
+        val preferences = preferences(context)
+        return preferences?.getFloat(key, defaultValue) ?: 0.0F
+    }
+
     fun preferences(context: Context?) : SharedPreferences? {
         return context?.getSharedPreferences(P_NAME, Context.MODE_PRIVATE)?: null
     }

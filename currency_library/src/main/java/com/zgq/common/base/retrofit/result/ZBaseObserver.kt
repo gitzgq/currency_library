@@ -23,6 +23,10 @@ abstract class ZBaseObserver<T> : Observer<ZBaseBean<T>> {
                 onSuccess(baseBean.model)
                 return
             }
+            if (null != baseBean.list) {
+                onSuccess(baseBean.list)
+                return
+            }
             if (null != baseBean.data) {
                 onSuccess(baseBean.data)
                 return

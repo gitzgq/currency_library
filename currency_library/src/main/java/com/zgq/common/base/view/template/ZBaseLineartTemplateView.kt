@@ -37,10 +37,10 @@ open class ZBaseLineartTemplateView : LinearLayout, ZBaseTemplateI{
     }
 
     /** 初始化view、数据 */
-    fun initView(){}
+    open fun initView(){}
 
     /** 销毁 */
-    fun onDetached(){}
+    open fun onDetached(){}
 
     override fun setData(position: Int) {
     }

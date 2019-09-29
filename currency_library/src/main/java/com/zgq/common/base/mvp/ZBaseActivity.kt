@@ -18,7 +18,9 @@ open abstract class ZBaseActivity<P : ZBasePresenter<*>> : AppCompatActivity(), 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStatusStyle()
+        if(statusIsInit()){
+            setStatusStyle()
+        }
         setContentView(contentView)
         mPresenter = getPresenter
         initView()
@@ -64,9 +66,15 @@ open abstract class ZBaseActivity<P : ZBasePresenter<*>> : AppCompatActivity(), 
     open fun statusType() : Int{
         return COLOR
     }
+
     /** 返回类型为COLOR时， 返回颜色值 */
     open fun statusColor() : Int{
         return ZImmersionBar.statusColor
+    }
+
+    /** 是否使用沉浸式 */
+    open fun statusIsInit() : Boolean{
+        return true
     }
 
     // 设置沉浸式状态栏

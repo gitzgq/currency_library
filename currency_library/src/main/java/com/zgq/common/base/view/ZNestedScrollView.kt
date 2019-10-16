@@ -4,6 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.core.widget.NestedScrollView
 
+/**
+ * NestedScrollView（滑动View）
+ */
 class ZNestedScrollView : NestedScrollView {
 
     constructor(context: Context) : super(context)

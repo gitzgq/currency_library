@@ -7,6 +7,7 @@ import android.view.MotionEvent
 import android.view.ViewConfiguration
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.zgq.common.base.R
+import kotlin.math.abs
 
 /**
  * 下拉刷新
@@ -65,7 +66,7 @@ class ZSwipeRefreshLayout : SwipeRefreshLayout {
 
             MotionEvent.ACTION_MOVE -> {
                 val eventX = event.x
-                val xDiff = Math.abs(eventX - mPrevX)
+                val xDiff = abs(eventX - mPrevX)
                 // 增加60的容差，让下拉刷新在竖直滑动时就可以触发
                 if (xDiff > mTouchSlop + 60) {
                     return false

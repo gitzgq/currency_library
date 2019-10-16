@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import androidx.recyclerview.widget.RecyclerView
 
 /**
- * 加载更多
+ * RecyclerView (自定义加载更多)
  */
 open class ZRecyclerView : RecyclerView {
 

@@ -21,7 +21,7 @@ object ZRetrofitManager{
         // 初始化网络日志打印
         val httpLogger = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
             override fun log(message: String) {
-                ZLog.e("HttpLog = ", message)
+                ZLog.e("ZLOG = $message")
             }
         })
         // 设置级别最高（全部都打印）

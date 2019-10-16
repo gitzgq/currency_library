@@ -6,7 +6,7 @@ import android.util.Log
  * 日志打印管理类
  */
 object ZLog {
-    private val TAG: String = "ZLog"
+    private const val TAG: String = "ZLOG"
     private var isDebug : Boolean = true
 
     fun setDebug(b : Boolean){

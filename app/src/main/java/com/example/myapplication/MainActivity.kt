@@ -1,12 +1,16 @@
 package com.example.myapplication
 
 import MainPresenter
+import android.content.Intent
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.adapter.CommenRecylerViewAdapter
 import com.example.myapplication.bean.Template101Bean
 import com.zgq.common.base.data.ZEventData
+import com.zgq.common.base.glide.ZSelectImg
 import com.zgq.common.base.mvp.ZBasePermissionActivity
 import com.zgq.common.base.other.ZLog
+import com.zgq.common.base.other.ZPermission
 import com.zgq.common.base.view.ZRecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
@@ -32,6 +36,32 @@ class MainActivity : ZBasePermissionActivity<MainPresenter>(), ZRecyclerView.OnZ
         mRecyclerView?.adapter = mAdapter
         mRecyclerView?.setOnZLoadMoreListener(this)
         mPresenter?.loadBanner()
+
+        var permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        m_main_fwgxwj?.setOnClickListener {
+            checkPermission(permissions, object : ZPermission.OnPermissionCallBack {
+                override fun onAgree() {
+                    ZSelectImg.instence.openAlbum(this@MainActivity, object : ZSelectImg.OnSelectImgCallBack{
+                        override fun onFinish(path: String) {
+                            ZLog.e("path = $path")
+                        }
+                    })
+                }
+            })
+        }
+
+        m_main_tv_title_ccfwkj.setOnClickListener {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                // Filter to show only images, using the image MIME data type.
+                // If one wanted to search for ogg vorbis files, the type would be "audio/ogg".
+                // To search for all documents available via installed storage providers,
+                // it would be "*/*".
+                type = "image/*"
+            }
+
+            startActivityForResult(intent, 11)
+        }
     }
 
     /**

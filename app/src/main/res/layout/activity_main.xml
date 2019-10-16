@@ -15,6 +15,18 @@
         android:layout_height="wrap_content"
         android:text="Hello World!" />
 
+    <TextView
+        android:id="@+id/m_main_fwgxwj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="访问其他文件的图片、视频、语音" />
+
+    <TextView
+        android:id="@+id/m_main_tv_title_ccfwkj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="存储访问框架" />
+
     <com.example.myapplication.cutom.CtyRecyclerView
         android:id="@+id/mRecyclerView"
         android:layout_width="match_parent"

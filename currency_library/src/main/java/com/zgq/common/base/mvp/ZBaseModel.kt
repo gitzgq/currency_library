@@ -11,9 +11,8 @@ open class ZBaseModel(basePresenter: ZBasePresenter<*>) {
     }
 
     open fun clearNetWork() {
-        if (null != disposable) {
-            disposable?.clear()
-            disposable = null
+        disposable?.let {
+            it.clear()
         }
     }
 }

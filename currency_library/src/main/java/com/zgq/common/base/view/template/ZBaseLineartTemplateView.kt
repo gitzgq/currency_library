@@ -45,7 +45,7 @@ open class ZBaseLineartTemplateView : LinearLayout, ZBaseTemplateI{
     override fun setData(position: Int) {
     }
 
-    override fun setData(bundle: Bundle) {
+    override fun setData(bundle: Bundle?) {
     }
 
     override fun setData(any: Any?) {
@@ -60,7 +60,7 @@ open class ZBaseLineartTemplateView : LinearLayout, ZBaseTemplateI{
     override fun setData(any: Any?, position: Int, bundle: Bundle?) {
     }
 
-    override fun setData(bundle: Bundle, dialog: DialogFragment?, dialogClickListener: ZOnDialogClickListener?) {
+    override fun setData(bundle: Bundle?, dialog: DialogFragment?, dialogClickListener: ZOnDialogClickListener?) {
     }
 
 }

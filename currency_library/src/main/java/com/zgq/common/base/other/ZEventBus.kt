@@ -16,45 +16,42 @@ class ZEventBus {
     /**
      * 注册
      */
-    fun register(subscriber : Any){
-        if(null == subscriber || (subscriber !is AppCompatActivity && subscriber !is Fragment)){
-            ZLog.e("注册EventBus失败")
-            return
+    fun register(any : Any){
+        any?.let {
+            if(it is AppCompatActivity || it is Fragment){
+                EventBus.getDefault().register(it)
+            }
         }
-        EventBus.getDefault().register(subscriber)
     }
 
     /**
      * 反注册
      */
-    fun unregister(subscriber : Any){
-        if(null == subscriber || (subscriber !is AppCompatActivity && subscriber !is Fragment)){
-            ZLog.e("反注册EventBus失败")
-            return
+    fun unregister(any : Any){
+        any?.let {
+            if(it is AppCompatActivity || it is Fragment){
+                EventBus.getDefault().unregister(it)
+            }
         }
-        EventBus.getDefault().unregister(subscriber)
     }
 
 
     /**
      * 发送普通事件
      */
-    fun post(any: Any){
-        if(null == any){
-            ZLog.e("EventBus发送普通事件失败")
-            return
+    fun post(any: Any?){
+        any?.let {
+            EventBus.getDefault().post(it)
         }
-        EventBus.getDefault().post(any)
+
     }
 
     /**
      * 发送普通事件
      */
-    fun postSticky(any: Any){
-        if(null == any){
-            ZLog.e("EventBus发送粘性事件失败")
-            return
+    fun postSticky(any: Any?){
+        any?.let {
+            EventBus.getDefault().postSticky(it)
         }
-        EventBus.getDefault().postSticky(any)
     }
 }

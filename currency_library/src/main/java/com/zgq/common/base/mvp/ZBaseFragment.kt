@@ -79,9 +79,7 @@ open abstract class ZBaseFragment<P : ZBasePresenter<*>> : Fragment(), ZBaseView
     }
 
     override fun onDestroy() {
-        if(null != mPresenter){
-            mPresenter?.clear()
-        }
+        mPresenter?.clear()
         // true：注册EventBus  默认false
         if(registerEventBus()){
             ZEventBus.instence.unregister(this)

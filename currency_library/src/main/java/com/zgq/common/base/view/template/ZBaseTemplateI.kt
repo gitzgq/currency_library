@@ -5,7 +5,7 @@ import androidx.fragment.app.DialogFragment
 
 interface ZBaseTemplateI {
 
-    fun setData(bundle : Bundle)
+    fun setData(bundle : Bundle?)
 
     fun setData(position : Int)
 
@@ -17,6 +17,6 @@ interface ZBaseTemplateI {
 
     fun setData(any : Any?, position : Int, bundle : Bundle?)
 
-    fun setData(bundle : Bundle, dialog : DialogFragment?, dialogClickListener: ZOnDialogClickListener?)
+    fun setData(bundle : Bundle?, dialog : DialogFragment?, dialogClickListener: ZOnDialogClickListener?)
 
 }

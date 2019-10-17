@@ -11,7 +11,6 @@ import androidx.appcompat.widget.AppCompatEditText
 import com.zgq.common.base.R
 
 class ZDelEditText : AppCompatEditText, View.OnFocusChangeListener, TextWatcher {
-    
 
     // 删除按钮
     private var delDrawable : Drawable? = null

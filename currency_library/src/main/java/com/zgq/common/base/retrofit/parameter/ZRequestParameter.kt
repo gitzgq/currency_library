@@ -16,8 +16,11 @@ class ZRequestParameter{
         }
     }
 
+    private val typeJson = "application/json; charset=utf-8"
+    private val typeMultipart = "multipart/form-data"
+
     fun body(content: String): RequestBody {
-        return body(content, "application/json; charset=utf-8")
+        return body(content, typeJson)
     }
 
     /**
@@ -28,10 +31,6 @@ class ZRequestParameter{
      */
     fun body(content: String, type: String): RequestBody {
         return RequestBody.create(type.toMediaTypeOrNull(), content)
-    }
-
-    fun multipart(): String {
-        return "multipart/form-data"
     }
 
     /**
@@ -46,7 +45,7 @@ class ZRequestParameter{
     }
 
     fun bodyFile(file: File): RequestBody {
-        return RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+        return RequestBody.create(typeMultipart.toMediaTypeOrNull(), file)
     }
 
 }

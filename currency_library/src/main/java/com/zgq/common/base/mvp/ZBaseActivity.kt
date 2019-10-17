@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.gyf.immersionbar.ImmersionBar
 import com.zgq.common.base.other.ZEventBus
 import com.zgq.common.base.other.ZImmersionBar
+import com.zgq.common.base.other.ZToast
 
 /**
  * Activity的基类
@@ -101,13 +102,18 @@ open abstract class ZBaseActivity<P : ZBasePresenter<*>> : AppCompatActivity(), 
     }
 
     /** 发送普通事件 */
-    open fun post(any: Any){
+    open fun post(any: Any?){
         ZEventBus.instence.post(any)
     }
 
     /** 发送粘性事件 */
-    open fun postSticky(any: Any){
+    open fun postSticky(any: Any?){
         ZEventBus.instence.postSticky(any)
+    }
+
+    override fun onPause() {
+        ZToast.cancel()
+        super.onPause()
     }
 
     override fun onDestroy() {

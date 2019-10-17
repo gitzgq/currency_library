@@ -19,26 +19,26 @@ abstract class ZBaseObserver<T> : Observer<ZBaseBean<T>> {
             return
         }
         if (baseBean?.code == 0) {
-            if (null != baseBean.model) {
-                onSuccess(baseBean.model)
+            baseBean?.model?.let {
+                onSuccess(it)
                 return
             }
-            if (null != baseBean.list) {
-                onSuccess(baseBean.list)
+            baseBean?.list?.let {
+                onSuccess(it)
                 return
             }
-            if (null != baseBean.data) {
-                onSuccess(baseBean.data)
+            baseBean?.data?.let {
+                onSuccess(it)
                 return
             }
-            if (null != baseBean.imageUri) {
-                onSuccess(baseBean.imageUri)
+            baseBean?.imageUri?.let {
+                onSuccess(it)
                 return
             }
             onSuccess(null)
             return
         }
-        onError(baseBean.code, baseBean.message)
+        onError(baseBean?.code, baseBean?.message)
     }
 
     override fun onError(e: Throwable) {

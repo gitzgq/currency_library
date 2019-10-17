@@ -19,35 +19,15 @@ class ZImgUtil {
         val instence : ZImgUtil by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) { ZImgUtil() }
     }
 
-
     /**
      * 图片压缩-质量压缩
      * @param filePath 源图片路径
      * @param quality  压缩比例 0 - 100 (数值越小压缩的越厉害)
      * @return 压缩后的路径
      */
-    @JvmOverloads
     fun compressImage(filePath: String, quality: Int = 80): String {
-        return compressImage(filePath, quality, 5000000)
-    }
-
-    /**
-     * 图片压缩-质量压缩
-     * @param filePath 源图片路径
-     * @param quality  压缩比例 0 - 100 (数值越小压缩的越厉害)
-     * @param size     图片大小
-     * @return 压缩后的路径
-     */
-    fun compressImage(filePath: String, quality: Int = 80, size: Long): String {
         if (ZStringUtil.isEmpty(filePath)) {
             return ""
-        }
-        val file = File(filePath)
-        if (file.exists() && file.isFile) {
-            val length = file.length()
-            if (length <= size) {// 小于直接返回，不进行压缩
-                return filePath
-            }
         }
         var bm: Bitmap? = getSmallBitmap(filePath)//获取一定尺寸的图片
         val degree = getRotateAngle(filePath)//获取相片拍摄角度

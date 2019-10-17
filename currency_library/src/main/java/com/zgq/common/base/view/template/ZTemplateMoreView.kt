@@ -52,7 +52,7 @@ class ZTemplateMoreView : ZBaseRelativeTemplateView {
                 zTvContent?.visibility = View.GONE
                 cancel()
                 timer = Timer()
-                timer?.schedule(object : TimerTask() {// 延迟500毫秒 显示没有更多数据
+                timer?.schedule(object : TimerTask() {// 延迟100毫秒 显示没有更多数据
                     override fun run() {
                         (mContext as AppCompatActivity).runOnUiThread {
                             cancel()
@@ -60,7 +60,7 @@ class ZTemplateMoreView : ZBaseRelativeTemplateView {
                             zTvContent?.text = "没有更多数据了"
                         }
                     }
-                }, 200)
+                }, 100)
 
             }
             ERROR -> {

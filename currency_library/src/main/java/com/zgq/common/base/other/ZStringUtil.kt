@@ -8,7 +8,7 @@ import java.util.regex.Pattern
  */
 object ZStringUtil {
 
-    val PRICE = "¥"
+    const val PRICE = "¥"
 
 
     /**

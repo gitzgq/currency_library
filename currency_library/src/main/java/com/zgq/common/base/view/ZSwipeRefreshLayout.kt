@@ -60,10 +60,10 @@ class ZSwipeRefreshLayout : SwipeRefreshLayout {
     }
 
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
-
         when (event.action) {
+            // 按下
             MotionEvent.ACTION_DOWN -> mPrevX = event.x
-
+            // 移动
             MotionEvent.ACTION_MOVE -> {
                 val eventX = event.x
                 val xDiff = abs(eventX - mPrevX)
@@ -73,7 +73,6 @@ class ZSwipeRefreshLayout : SwipeRefreshLayout {
                 }
             }
         }
-
         return super.onInterceptTouchEvent(event)
     }
 

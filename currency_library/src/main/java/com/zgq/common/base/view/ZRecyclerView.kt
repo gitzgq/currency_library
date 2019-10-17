@@ -22,7 +22,7 @@ open class ZRecyclerView : RecyclerView {
                 return
             }
             if (!recyclerView.canScrollVertically(1)) {// 滑动到底部
-                if (null != loadMoreListener && isLoadingData) {
+                if (isLoadingData) {
                     loadMoreListener?.onCtyLoadMore()
                     // 设置不可加载状态
                     isLoadingData = false

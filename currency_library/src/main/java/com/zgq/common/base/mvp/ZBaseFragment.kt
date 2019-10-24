@@ -69,12 +69,12 @@ open abstract class ZBaseFragment<P : ZBasePresenter<*>> : Fragment(), ZBaseView
     }
 
     /** 发送普通事件 */
-    open fun post(any: Any){
+    open fun post(any: Any?){
         ZEventBus.instence.post(any)
     }
 
     /** 发送粘性事件 */
-    open fun postSticky(any: Any){
+    open fun postSticky(any: Any?){
         ZEventBus.instence.postSticky(any)
     }
 

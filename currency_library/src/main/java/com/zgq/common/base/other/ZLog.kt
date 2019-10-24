@@ -19,7 +19,7 @@ object ZLog {
 
     fun e(tag: String?, content: String?) {
         if(isDebug){
-            Log.e(tag, content)
+            Log.e(tag?: TAG, content?: "")
         }
     }
 }

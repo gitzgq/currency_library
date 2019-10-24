@@ -16,7 +16,7 @@ class ZEventBus {
     /**
      * 注册
      */
-    fun register(any : Any){
+    fun register(any : Any?){
         any?.let {
             if(it is AppCompatActivity || it is Fragment){
                 EventBus.getDefault().register(it)
@@ -27,7 +27,7 @@ class ZEventBus {
     /**
      * 反注册
      */
-    fun unregister(any : Any){
+    fun unregister(any : Any?){
         any?.let {
             if(it is AppCompatActivity || it is Fragment){
                 EventBus.getDefault().unregister(it)

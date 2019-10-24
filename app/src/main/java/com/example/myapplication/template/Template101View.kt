@@ -18,17 +18,22 @@ class Template101View : ZBaseRelativeTemplateView {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int): super(context, attrs, defStyleAttr)
 
     override fun initView() {
-        val w = ZScreenUI.width(mContext) - ZScreenUI.dpTopx(mContext, 30)
-        ZScreenUI.setViewWH(m101IvImg, w, w * 159 / 329)
+        mContext?.let {
+            val w = ZScreenUI.width(it) - ZScreenUI.dpTopx(it, 30)
+            ZScreenUI.setViewWH(m101IvImg, w, w * 159 / 329)
+        }
+
     }
 
     override fun setData(any: Any?, position: Int, bundle: Bundle?) {
-        if(null == any || position < 0 || any !is Template101Bean){
+        if(null == mContext || null == any || position < 0 || any !is Template101Bean){
             return
         }
+        mContext?.let {
+            ZGlide.instence.loadRoundImg(it, m101IvImg, any.image)
+        }
 
-        any.image?.let { ZGlide.instence.loadRoundImg(mContext, m101IvImg, it) }
-        m101TvContent?.text = any?.linkTitle + "===" + position
+        m101TvContent?.text = any?.linkTitle?: "===$position"
     }
 
     override fun onDetached() {

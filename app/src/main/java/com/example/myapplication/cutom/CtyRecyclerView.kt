@@ -88,6 +88,7 @@ class CtyRecyclerView : ZRecyclerView{
         if (null != adapter) {
             adapter?.setStatus(if (isLoadingData) ZTemplateMoreView.LOAD else ZTemplateMoreView.EMPTY)
             if (pageIndex == 1) {// 第一页，调用刷新的全部数据的方法
+                this.scrollToPosition(0)
                 adapter?.notifyDataSetChanged()
                 return
             }

@@ -17,8 +17,8 @@ open class ZBasePresenter<V : ZBaseView>(view: ZBaseView) {
     }
 
     open fun clear(){
-        if(null != weakReference){
-            weakReference?.clear()
+        weakReference?.let {
+            it.clear()
         }
     }
 

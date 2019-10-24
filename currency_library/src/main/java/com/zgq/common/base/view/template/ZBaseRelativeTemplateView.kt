@@ -8,7 +8,7 @@ import androidx.fragment.app.DialogFragment
 
 open class ZBaseRelativeTemplateView : RelativeLayout, ZBaseTemplateI{
     /** 上下文  */
-    var mContext: Context
+    var mContext: Context? = null
 
     constructor(context: Context): super(context) {
         mContext = context

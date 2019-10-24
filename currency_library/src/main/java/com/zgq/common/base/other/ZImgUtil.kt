@@ -9,6 +9,7 @@ import android.util.Base64
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import kotlin.math.roundToInt
 
 /**
  * 图片压缩工具类
@@ -25,27 +26,27 @@ class ZImgUtil {
      * @param quality  压缩比例 0 - 100 (数值越小压缩的越厉害)
      * @return 压缩后的路径
      */
-    fun compressImage(filePath: String, quality: Int = 80): String {
-        if (ZStringUtil.isEmpty(filePath)) {
-            return ""
+    fun compressImage(filePath: String?, quality: Int = 80): String {
+        filePath?.let {
+            var bm: Bitmap? = getSmallBitmap(it)//获取一定尺寸的图片
+            val degree = getRotateAngle(it)//获取相片拍摄角度
+            bm?.let { it1 ->
+                if (degree != 0) {//旋转照片角度，防止头像横着显示
+                    bm = setRotateAngle(degree, it1)
+                }
+                val outputFile = File(it)
+                try {
+                    val out = FileOutputStream(outputFile)
+                    bm?.compress(Bitmap.CompressFormat.JPEG, quality, out)
+                    out?.close()
+                } catch (e: Exception) {
+                    ZLog.e("压缩异常 = " + e.message)
+                    return it
+                }
+                return outputFile?.path?: it
+            }
         }
-        var bm: Bitmap? = getSmallBitmap(filePath)//获取一定尺寸的图片
-        val degree = getRotateAngle(filePath)//获取相片拍摄角度
-
-        if (degree != 0) {//旋转照片角度，防止头像横着显示
-            bm = setRotateAngle(degree, bm)
-        }
-        val outputFile = File(filePath)
-        try {
-            val out = FileOutputStream(outputFile)
-            bm?.compress(Bitmap.CompressFormat.JPEG, quality, out)
-            out?.close()
-        } catch (e: Exception) {
-            ZLog.e("压缩异常 = " + e.message)
-            return filePath
-        }
-
-        return outputFile.path
+        return ""
     }
 
     /**
@@ -54,24 +55,20 @@ class ZImgUtil {
      * @param filePath
      * @return
      */
-    fun getRotateAngle(filePath: String): Int {
-        if (ZStringUtil.isEmpty(filePath)) {
-            return 0
-        }
-        var rotate_angle = 0
-        try {
-            val exifInterface = ExifInterface(filePath)
-            val orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-            when (orientation) {
-                ExifInterface.ORIENTATION_ROTATE_90 -> rotate_angle = 90
-                ExifInterface.ORIENTATION_ROTATE_180 -> rotate_angle = 180
-                ExifInterface.ORIENTATION_ROTATE_270 -> rotate_angle = 270
+    fun getRotateAngle(filePath: String?): Int {
+        filePath?.let {
+            try {
+                val exifInterface = ExifInterface(it)
+                when (exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)) {
+                    ExifInterface.ORIENTATION_ROTATE_90 -> return 90
+                    ExifInterface.ORIENTATION_ROTATE_180 -> return 180
+                    ExifInterface.ORIENTATION_ROTATE_270 -> return 270
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
-        } catch (e: IOException) {
-            e.printStackTrace()
         }
-
-        return rotate_angle
+        return 0
     }
 
     /**
@@ -83,13 +80,11 @@ class ZImgUtil {
      */
     private fun setRotateAngle(angle: Int, bitmap: Bitmap?): Bitmap? {
         var bitmap = bitmap
-
-        if (bitmap != null) {
+        bitmap?.let {
             val m = Matrix()
             m.postRotate(angle.toFloat())
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width,
-                    bitmap.height, m, true)
-            return bitmap
+            bitmap = Bitmap.createBitmap(it, 0, 0, it.width,
+                    it.height, m, true)
         }
         return bitmap
 
@@ -99,27 +94,34 @@ class ZImgUtil {
     /**
      * 根据路径获得图片信息并按比例压缩，返回bitmap
      */
-    fun getSmallBitmap(filePath: String): Bitmap {
-        val options = BitmapFactory.Options()
-        options.inJustDecodeBounds = true//只解析图片边沿，获取宽高
-        BitmapFactory.decodeFile(filePath, options)
-        // 计算缩放比
-        options.inSampleSize = calculateInSampleSize(options, 480, 800)
-        // 完整解析图片返回bitmap
-        options.inJustDecodeBounds = false
-        return BitmapFactory.decodeFile(filePath, options)
+    fun getSmallBitmap(filePath: String?): Bitmap? {
+        filePath?.let {
+            val options = BitmapFactory.Options()
+            options.inJustDecodeBounds = true//只解析图片边沿，获取宽高
+            BitmapFactory.decodeFile(it, options)
+            // 计算缩放比
+            options.inSampleSize = calculateInSampleSize(options, 480, 800)
+            // 完整解析图片返回bitmap
+            options.inJustDecodeBounds = false
+            return BitmapFactory.decodeFile(it, options)
+        }
+        return null
+
     }
 
 
-    private fun calculateInSampleSize(options: BitmapFactory.Options,
+    private fun calculateInSampleSize(options: BitmapFactory.Options?,
                                       reqWidth: Int, reqHeight: Int): Int {
-        val height = options.outHeight
-        val width = options.outWidth
         var inSampleSize = 1
-        if (height > reqHeight || width > reqWidth) {
-            val heightRatio = Math.round(height.toFloat() / reqHeight.toFloat())
-            val widthRatio = Math.round(width.toFloat() / reqWidth.toFloat())
-            inSampleSize = if (heightRatio < widthRatio) heightRatio else widthRatio
+        options?.let {
+            val height = it.outHeight
+            val width = it.outWidth
+
+            if (height > reqHeight || width > reqWidth) {
+                val heightRatio = (height.toFloat() / reqHeight.toFloat()).roundToInt()
+                val widthRatio = (width.toFloat() / reqWidth.toFloat()).roundToInt()
+                inSampleSize = if (heightRatio < widthRatio) heightRatio else widthRatio
+            }
         }
         return inSampleSize
     }
@@ -129,12 +131,17 @@ class ZImgUtil {
      * base64转为bitmap
      * @param base64Str
      */
-    fun base64StrToBitmap(base64Str: String): Bitmap? {
-        if (ZStringUtil.isEmpty(base64Str)) {
-            return null
+    fun base64StrToBitmap(base64Str: String?): Bitmap? {
+        base64Str?.let {
+            return try {
+                val bytes = Base64.decode(it, Base64.DEFAULT)
+                BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+            }catch (e: Exception){
+                null
+            }
         }
-        val bytes = Base64.decode(base64Str, Base64.DEFAULT)
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+        return null
+
     }
 
 

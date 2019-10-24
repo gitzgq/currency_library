@@ -14,9 +14,11 @@ object ZStringUtil {
     /**
      * 字符串是否为空 true：是  false：否
      */
-    fun isEmpty(content: String): Boolean {
-        if (content?.length <= 0 || content.contentEquals("null")) {
-            return true
+    fun isEmpty(content: String?): Boolean {
+        content?.let {
+            if (it?.length <= 0 || it?.contentEquals("null")) {
+                return true
+            }
         }
         return false
     }
@@ -24,14 +26,16 @@ object ZStringUtil {
     /**
      * 是否是图片地址 true：是  false：否
      */
-    fun isImgUrl(url: String): Boolean {
-        if (url?.length <= 0 || (!url.contains("http://") && !url.contains("https://"))) {
-            return false
-        }
-        if (!url.contains(".jpg") && !url.contains(".png") && !url.contains(".git") && !url.contains(".jpeg")
-                && !url.contains(".bmp") && !url.contains(".webp") && !url.contains(".JPG") && !url.contains(".PNG")
-                && !url.contains(".GIF") && !url.contains(".JPEG") && !url.contains(".BMP") && !url.contains(".WEBP")) {
-            return false
+    fun isImgUrl(url: String?): Boolean {
+        url?.let {
+            if (url?.length <= 0 || (!url.contains("http://") && !url.contains("https://"))) {
+                return false
+            }
+            if (!url.contains(".jpg") && !url.contains(".png") && !url.contains(".git") && !url.contains(".jpeg")
+                    && !url.contains(".bmp") && !url.contains(".webp") && !url.contains(".JPG") && !url.contains(".PNG")
+                    && !url.contains(".GIF") && !url.contains(".JPEG") && !url.contains(".BMP") && !url.contains(".WEBP")) {
+                return false
+            }
         }
         return true
     }
@@ -62,7 +66,7 @@ object ZStringUtil {
      * @param phone
      * @return
      */
-    fun isPhoneNumber(phone: String): Boolean {
+    fun isPhoneNumber(phone: String?): Boolean {
         if (isEmpty(phone)) {
             return false
         }

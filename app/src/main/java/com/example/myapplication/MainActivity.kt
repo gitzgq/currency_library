@@ -11,6 +11,7 @@ import com.zgq.common.base.glide.ZSelectImg
 import com.zgq.common.base.mvp.ZBasePermissionActivity
 import com.zgq.common.base.other.ZLog
 import com.zgq.common.base.other.ZPermission
+import com.zgq.common.base.other.ZScreenUI
 import com.zgq.common.base.view.ZRecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
@@ -62,6 +63,7 @@ class MainActivity : ZBasePermissionActivity<MainPresenter>(), ZRecyclerView.OnZ
 
             startActivityForResult(intent, 11)
         }
+
     }
 
     /**

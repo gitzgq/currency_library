@@ -72,15 +72,16 @@ object ZPermission {
      * @param context
      * @param packageName   应用applicationId
      */
-    fun openAppSetting(context: Context?, packageName : String?) {
-        if (null == context || ZStringUtil.isEmpty(packageName?: "")) {
-            return
+    fun openAppSetting(context: Context?, packageName: String?) {
+        context?.let {
+            packageName?.let {it1 ->
+                val intent = Intent()
+                intent?.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                val uri = Uri.fromParts("package", it1, null)
+                intent?.data = uri
+                it?.startActivity(intent)
+            }
         }
-        val intent = Intent()
-        intent?.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-        val uri = Uri.fromParts("package",packageName, null)
-        intent?.data = uri
-        context?.startActivity(intent)
     }
 
     interface OnPermissionCallBack{

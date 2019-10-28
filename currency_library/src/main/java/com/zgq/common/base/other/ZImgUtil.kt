@@ -23,10 +23,40 @@ class ZImgUtil {
     /**
      * 图片压缩-质量压缩
      * @param filePath 源图片路径
+     * @return 压缩后的路径
+     */
+    fun compressImage(filePath: String?): String {
+        return compressImage(filePath, 80)
+    }
+
+    /**
+     * 图片压缩-质量压缩
+     * @param filePath 源图片路径
      * @param quality  压缩比例 0 - 100 (数值越小压缩的越厉害)
      * @return 压缩后的路径
      */
     fun compressImage(filePath: String?, quality: Int = 80): String {
+        return compressImage(filePath, filePath, quality)
+    }
+
+    /**
+     * 图片压缩-质量压缩
+     * @param filePath 源图片路径
+     * @param newFilePath 压缩之后的图片路径
+     * @return 压缩后的路径
+     */
+    fun compressImage(filePath: String?, newFilePath: String?): String {
+        return compressImage(filePath, newFilePath, 80)
+    }
+
+    /**
+     * 图片压缩-质量压缩
+     * @param filePath 源图片路径
+     * @param newFilePath 压缩之后的图片路径
+     * @param quality  压缩比例 0 - 100 (数值越小压缩的越厉害)
+     * @return 压缩后的路径
+     */
+    fun compressImage(filePath: String?, newFilePath: String?, quality: Int = 80): String {
         filePath?.let {
             var bm: Bitmap? = getSmallBitmap(it)//获取一定尺寸的图片
             val degree = getRotateAngle(it)//获取相片拍摄角度
@@ -34,16 +64,22 @@ class ZImgUtil {
                 if (degree != 0) {//旋转照片角度，防止头像横着显示
                     bm = setRotateAngle(degree, it1)
                 }
-                val outputFile = File(it)
+                val oldFile = File(it)
+                var newFile: File?
+                newFile = if(ZStringUtil.isEmpty(newFilePath)){
+                    oldFile
+                }else{
+                    File(newFilePath, oldFile.name)
+                }
                 try {
-                    val out = FileOutputStream(outputFile)
+                    val out = FileOutputStream(newFile)
                     bm?.compress(Bitmap.CompressFormat.JPEG, quality, out)
                     out?.close()
                 } catch (e: Exception) {
                     ZLog.e("压缩异常 = " + e.message)
                     return it
                 }
-                return outputFile?.path?: it
+                return newFile?.path?: it
             }
         }
         return ""

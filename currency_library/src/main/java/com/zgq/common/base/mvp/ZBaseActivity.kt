@@ -78,6 +78,11 @@ open abstract class ZBaseActivity<P : ZBasePresenter<*>> : AppCompatActivity(), 
         return true
     }
 
+    /** 是否修改状态栏文字颜色为深色 */
+    open fun statusTextColor() : Boolean{
+        return false
+    }
+
     // 设置沉浸式状态栏
     private fun setStatusStyle(){
         if(null == immersionBar){
@@ -92,7 +97,9 @@ open abstract class ZBaseActivity<P : ZBasePresenter<*>> : AppCompatActivity(), 
             immersionBar?.statusBarColor(statusColor())
         }
         // 当状态栏背景为亮色，手机不支持修改状态栏的字体颜色时调用此方法
-        immersionBar?.statusBarDarkFont(true)
+        if(statusTextColor()){
+            immersionBar?.statusBarDarkFont(true)
+        }
         immersionBar?.init()
     }
 

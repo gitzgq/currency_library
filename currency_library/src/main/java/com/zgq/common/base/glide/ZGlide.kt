@@ -29,76 +29,76 @@ class ZGlide{
     /**
      * 加载直角图片
      */
-    fun loadImg(context : Context, img : ImageView, obj: Any?){
+    fun loadImg(context: Context?, img: ImageView?, obj: Any?){
         loadImg(context, img, obj, DEFAULT_IMG, true)
     }
 
-    fun loadImg(context : Context, img : ImageView, obj: Any?, defaultImg : Int){
+    fun loadImg(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int){
         loadImg(context, img, obj, defaultImg, true)
     }
 
-    fun loadImg(context : Context, img : ImageView, obj: Any?, cache : Boolean){
+    fun loadImg(context: Context?, img: ImageView?, obj: Any?, cache: Boolean){
         loadImg(context, img, obj, DEFAULT_IMG, cache)
     }
 
-    fun loadImg(context : Context, img : ImageView, obj: Any?, defaultImg : Int, cache : Boolean){
+    fun loadImg(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, cache: Boolean){
         glide(context, img, obj, defaultImg, cache, TYPE_DEFAULT, 0, null)
     }
 
     /**
      * 加载圆角图片
      */
-    fun loadRoundImg(context : Context, img : ImageView, obj: Any?){
+    fun loadRoundImg(context: Context?, img: ImageView?, obj: Any?){
         loadRoundImg(context, img, obj, DEFAULT_IMG, true, ROUND_SIZE, ZRoundTransformation.CornerType.ALL)
     }
 
-    fun loadRoundImg(context : Context, img : ImageView, obj: Any?, roundSize: Int){
+    fun loadRoundImg(context: Context?, img: ImageView?, obj: Any?, roundSize: Int){
         loadRoundImg(context, img, obj, DEFAULT_IMG, true, roundSize, ZRoundTransformation.CornerType.ALL)
     }
 
-    fun loadRoundImg(context : Context, img : ImageView, obj: Any?, cache : Boolean){
+    fun loadRoundImg(context: Context?, img: ImageView?, obj: Any?, cache: Boolean){
         loadRoundImg(context, img, obj, DEFAULT_IMG, cache, ROUND_SIZE, ZRoundTransformation.CornerType.ALL)
     }
 
-    fun loadRoundImg(context : Context, img : ImageView, obj: Any?, defaultImg : Int, cache : Boolean, roundSize : Int, roundType: ZRoundTransformation.CornerType?){
+    fun loadRoundImg(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, cache: Boolean, roundSize : Int, roundType: ZRoundTransformation.CornerType?){
         glide(context, img, obj, defaultImg, cache, TYPE_ROUND, roundSize, roundType)
     }
 
     /**
      * 加载圆形图片
      */
-    fun loadCircleImg(context : Context, img : ImageView, obj: Any?){
+    fun loadCircleImg(context: Context?, img: ImageView?, obj: Any?){
         loadCircleImg(context, img, obj, DEFAULT_IMG, true)
     }
 
-    fun loadCircleImg(context : Context, img : ImageView, obj: Any?, defaultImg : Int){
+    fun loadCircleImg(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int){
         loadCircleImg(context, img, obj, defaultImg, true)
     }
 
-    fun loadCircleImg(context : Context, img : ImageView, obj: Any?, cache : Boolean){
+    fun loadCircleImg(context: Context?, img: ImageView?, obj: Any?, cache: Boolean){
         loadCircleImg(context, img, obj, DEFAULT_IMG, cache)
     }
 
-    fun loadCircleImg(context : Context, img : ImageView, obj: Any?, defaultImg : Int, cache : Boolean){
+    fun loadCircleImg(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, cache: Boolean){
         glide(context, img, obj, defaultImg, cache, TYPE_CIRCLE, 0, null)
     }
 
     /**
      * 加载原图
      */
-    fun loadOriginal(context : Context, img : ImageView, obj: Any?){
+    fun loadOriginal(context: Context?, img: ImageView?, obj: Any?){
         loadOriginal(context, img, obj, DEFAULT_IMG, true)
     }
 
-    fun loadOriginal(context : Context, img : ImageView, obj: Any?, defaultImg : Int){
+    fun loadOriginal(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int){
         loadOriginal(context, img, obj, defaultImg, true)
     }
 
-    fun loadOriginal(context : Context, img : ImageView, obj: Any?, cache : Boolean){
+    fun loadOriginal(context: Context?, img: ImageView?, obj: Any?, cache: Boolean){
         loadOriginal(context, img, obj, DEFAULT_IMG, cache)
     }
 
-    fun loadOriginal(context : Context, img : ImageView, obj: Any?, defaultImg : Int, cache : Boolean){
+    fun loadOriginal(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, cache: Boolean){
         glide(context, img, obj, defaultImg, cache, TYPE_ORIGINAL, 0, null)
     }
 

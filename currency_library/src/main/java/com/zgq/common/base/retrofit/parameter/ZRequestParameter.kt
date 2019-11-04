@@ -16,11 +16,15 @@ class ZRequestParameter{
         }
     }
 
-    private val typeJson = "application/json; charset=utf-8"
-    private val typeMultipart = "multipart/form-data"
+    val typeJson = "application/json; charset=utf-8"
+    val typeMultipart = "multipart/form-data"
 
     fun body(content: String): RequestBody {
         return body(content, typeJson)
+    }
+
+    fun bodyM(content: String): RequestBody {
+        return body(content, typeMultipart)
     }
 
     /**

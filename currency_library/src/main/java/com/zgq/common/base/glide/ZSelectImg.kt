@@ -1,15 +1,15 @@
 package com.zgq.common.base.glide
 
 import android.content.Context
-import android.database.Cursor
 import android.net.Uri
-import android.provider.MediaStore
-import androidx.loader.content.CursorLoader
 import com.qingmei2.rximagepicker.core.RxImagePicker
 import com.qingmei2.rximagepicker.ui.BasicImagePicker
+import com.zgq.common.base.other.ZImgUtil
 import com.zgq.common.base.other.ZLog
-import com.zgq.common.base.other.ZStringUtil
 
+/**
+ * 调用系统的相机、相册工具类
+ */
 class ZSelectImg {
 
     companion object{
@@ -25,76 +25,50 @@ class ZSelectImg {
      * 打开相机
      */
     fun openCamera(context: Context?, callBack : OnSelectImgCallBack){
-        if(null == context || null == callBack){
-            return
-        }
-        if(null == imgPicker){
-            imgPicker = RxImagePicker.create()
-        }
-        imgPicker?.openCamera(context)?.subscribe{result -> uri(context, result?.uri?: null, callBack)}
+        open(context, callBack, true)
     }
 
     /**
      * 打开相册
      */
     fun openAlbum(context: Context?, callBack : OnSelectImgCallBack){
-        if(null == context || null == callBack){
-            return
+        open(context, callBack, false)
+    }
+
+    /** 调用库的对应方法 */
+    private fun open(context: Context?, callBack : OnSelectImgCallBack, isCamera: Boolean){
+        context?.let { context ->
+            callBack?.let { callBack ->
+                if(null == imgPicker){
+                    imgPicker = RxImagePicker.create()
+                }
+                when(isCamera){
+                    true -> {// 打开相册
+                        imgPicker?.openCamera(context)?.subscribe{result -> uri(context, result?.uri?: null, callBack)}
+                    }
+                    false -> {// 打开相册
+                        imgPicker?.openGallery(context)?.subscribe{result -> uri(context, result?.uri?: null, callBack)}
+                    }
+                }
+
+            }
         }
-        if(null == imgPicker){
-            imgPicker = RxImagePicker.create()
-        }
-        imgPicker?.openGallery(context)?.subscribe{result -> uri(context, result?.uri?: null, callBack)}
     }
 
     /**
      * 获取到的图片Uri
      */
     private fun uri(context: Context?, uri : Uri?, callBack : OnSelectImgCallBack){
-        if(null == context || null == uri || null == callBack){
-            return
-        }
-        val path : String = uriToPath(context, uri)
-        if(ZStringUtil.isEmpty(path)){
-            return
-        }
-        ZLog.e("获取的路径 = $path")
-        callBack?.onFinish(path)
-    }
-
-    /**
-     * Uri转path
-     * @param context
-     * @param uri
-     * @return
-     */
-    private fun uriToPath(context: Context?, uri: Uri?): String {
-        if (null == context || null == uri) {
-            return ""
-        }
-        //由打印的contentUri可以看到：2种结构。正常的是：content://那么这种就要去数据库读取path。
-        //另外一种是Uri是 file:///那么这种是 Uri.fromFile(File file);得到的
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        var path: String?
-        var cursor: Cursor? = null
-        try {
-            val loader = CursorLoader(context, uri, projection, null, null, null)
-            cursor = loader.loadInBackground()
-
-            val column_index : Int = cursor?.getColumnIndex(projection[0])?: 0
-            cursor?.moveToFirst()
-            path = cursor?.getString(column_index)
-            //如果是正常的查询到数据库。然后返回结构
-            return path?: ""
-        } catch (e: Exception) {
-            ZLog.e("异常 = " + e.message)
-        } finally {
-            cursor?.close()
+        context?.let { context ->
+            uri?.let { uri ->
+                callBack?.let { callBack ->
+                    val path : String = ZImgUtil.instence.uriToPath(context, uri)
+                    ZLog.e("获取的路径 = $path")
+                    callBack?.onFinish(path)
+                }
+            }
         }
 
-        //如果是文件。Uri.fromFile(File file)生成的uri。那么下面这个方法可以得到结果
-        path = uri.path
-        return path?: ""
     }
 
     /**

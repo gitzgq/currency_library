@@ -1,10 +1,15 @@
 package com.zgq.common.base.other
 
+import android.content.Context
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
+import android.net.Uri
+import android.provider.MediaStore
 import android.util.Base64
+import androidx.loader.content.CursorLoader
 
 import java.io.File
 import java.io.FileOutputStream
@@ -180,6 +185,44 @@ class ZImgUtil {
         }
         return null
 
+    }
+
+    /**
+     * Uri转path
+     * @param context
+     * @param uri
+     * @return
+     */
+    fun uriToPath(context: Context?, uri: Uri?): String {
+        context?.let { context->
+            uri?.let { uri->
+                //由打印的contentUri可以看到：2种结构。正常的是：content://那么这种就要去数据库读取path。
+                //另外一种是Uri是 file:///那么这种是 Uri.fromFile(File file);得到的
+                val projection = arrayOf(MediaStore.Images.Media.DATA)
+                var path: String?
+                var cursor: Cursor? = null
+                try {
+                    val loader = CursorLoader(context, uri, projection, null, null, null)
+                    cursor = loader.loadInBackground()
+
+                    val column_index : Int = cursor?.getColumnIndex(projection[0])?: 0
+                    cursor?.moveToFirst()
+                    path = cursor?.getString(column_index)
+                    //如果是正常的查询到数据库。然后返回结构
+                    return path?: ""
+                } catch (e: Exception) {
+                    ZLog.e("异常 = " + e.message)
+                } finally {
+                    cursor?.close()
+                }
+
+                //如果是文件。Uri.fromFile(File file)生成的uri。那么下面这个方法可以得到结果
+                path = uri.path
+                return path?: ""
+            }
+            return ""
+        }
+        return ""
     }
 
 

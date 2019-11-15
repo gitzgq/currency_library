@@ -41,7 +41,18 @@ class ZImgUtil {
      * @return 压缩后的路径
      */
     fun compressImage(filePath: String?, quality: Int = 80): String {
-        return compressImage(filePath, filePath, quality)
+        return compressImage(filePath, quality, 0)
+    }
+
+    /**
+     * 图片压缩-质量压缩
+     * @param filePath 源图片路径
+     * @param quality  压缩比例 0 - 100 (数值越小压缩的越厉害)
+     * @param size     超过这个长度才压缩
+     * @return 压缩后的路径
+     */
+    fun compressImage(filePath: String?, quality: Int = 80, size: Long): String {
+        return compressImage(filePath, filePath, quality, size)
     }
 
     /**
@@ -51,7 +62,18 @@ class ZImgUtil {
      * @return 压缩后的路径
      */
     fun compressImage(filePath: String?, newFilePath: String?): String {
-        return compressImage(filePath, newFilePath, 80)
+        return compressImage(filePath, newFilePath, 0)
+    }
+
+    /**
+     * 图片压缩-质量压缩
+     * @param filePath 源图片路径
+     * @param newFilePath 压缩之后的图片路径
+     * @param size        超过这个长度才压缩
+     * @return 压缩后的路径
+     */
+    fun compressImage(filePath: String?, newFilePath: String?, size: Long): String {
+        return compressImage(filePath, newFilePath, 80, size)
     }
 
     /**
@@ -59,10 +81,17 @@ class ZImgUtil {
      * @param filePath 源图片路径
      * @param newFilePath 压缩之后的图片路径
      * @param quality  压缩比例 0 - 100 (数值越小压缩的越厉害)
+     * @param size     超过这个长度才压缩(bytes)
      * @return 压缩后的路径
      */
-    fun compressImage(filePath: String?, newFilePath: String?, quality: Int = 80): String {
+    fun compressImage(filePath: String?, newFilePath: String?, quality: Int = 80, size: Long): String {
         filePath?.let {
+            val oldFile = File(it)
+            val length = oldFile.length()
+            ZLog.e("文件长度 = $length")
+            if(length <= size){// 文件长度 <= 传过来的固定长度，不执行压缩
+                return filePath
+            }
             if(!ZStringUtil.isEmpty(it)){
                 var bm: Bitmap? = getSmallBitmap(it)//获取一定尺寸的图片
                 val degree = getRotateAngle(it)//获取相片拍摄角度
@@ -70,7 +99,6 @@ class ZImgUtil {
                     if (degree != 0) {//旋转照片角度，防止头像横着显示
                         bm = setRotateAngle(degree, it1)
                     }
-                    val oldFile = File(it)
                     var newFile: File?
                     newFile = if(ZStringUtil.isEmpty(newFilePath)){
                         oldFile
@@ -194,12 +222,23 @@ class ZImgUtil {
      * @return
      */
     fun uriToPath(context: Context?, uri: Uri?): String {
+        return uriToPath(context, uri, 0, 0)
+    }
+
+    /**
+     * Uri转path
+     * @param context
+     * @param uri
+     * @param quality 压缩比例 0 - 100 (数值越小压缩的越厉害)
+     * @param size    超过这个长度才压缩
+     * @return
+     */
+    fun uriToPath(context: Context?, uri: Uri?, quality: Int, size: Long): String {
         context?.let { context->
             uri?.let { uri->
                 //由打印的contentUri可以看到：2种结构。正常的是：content://那么这种就要去数据库读取path。
                 //另外一种是Uri是 file:///那么这种是 Uri.fromFile(File file);得到的
                 val projection = arrayOf(MediaStore.Images.Media.DATA)
-                var path: String?
                 var cursor: Cursor? = null
                 try {
                     val loader = CursorLoader(context, uri, projection, null, null, null)
@@ -207,18 +246,23 @@ class ZImgUtil {
 
                     val column_index : Int = cursor?.getColumnIndex(projection[0])?: 0
                     cursor?.moveToFirst()
-                    path = cursor?.getString(column_index)
                     //如果是正常的查询到数据库。然后返回结构
-                    return path?: ""
+                    val path = cursor?.getString(column_index)?: ""
+                    if(size <= 0){
+                        return path
+                    }
+                    return compressImage(path, context.getExternalFilesDir("COMPRESS_IMG")?.path, quality, size)
                 } catch (e: Exception) {
                     ZLog.e("异常 = " + e.message)
                 } finally {
                     cursor?.close()
                 }
-
                 //如果是文件。Uri.fromFile(File file)生成的uri。那么下面这个方法可以得到结果
-                path = uri.path
-                return path?: ""
+                val path = uri.path?: ""
+                if(size <= 0){
+                    return uri.path?: ""
+                }
+                return compressImage(path, context.getExternalFilesDir("COMPRESS_IMG")?.path, quality, size)
             }
             return ""
         }

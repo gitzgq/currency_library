@@ -24,6 +24,8 @@ class ZImgUtil {
     companion object{
         val instence : ZImgUtil by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) { ZImgUtil() }
     }
+    // 默认压缩比例
+    private val QUALITY: Int = 90
 
     /**
      * 图片压缩-质量压缩
@@ -31,7 +33,7 @@ class ZImgUtil {
      * @return 压缩后的路径
      */
     fun compressImage(filePath: String?): String {
-        return compressImage(filePath, 80)
+        return compressImage(filePath, QUALITY)
     }
 
     /**
@@ -40,7 +42,7 @@ class ZImgUtil {
      * @param quality  压缩比例 0 - 100 (数值越小压缩的越厉害)
      * @return 压缩后的路径
      */
-    fun compressImage(filePath: String?, quality: Int = 80): String {
+    fun compressImage(filePath: String?, quality: Int): String {
         return compressImage(filePath, quality, 0)
     }
 
@@ -51,7 +53,7 @@ class ZImgUtil {
      * @param size     超过这个长度才压缩
      * @return 压缩后的路径
      */
-    fun compressImage(filePath: String?, quality: Int = 80, size: Long): String {
+    fun compressImage(filePath: String?, quality: Int, size: Long): String {
         return compressImage(filePath, filePath, quality, size)
     }
 
@@ -73,7 +75,7 @@ class ZImgUtil {
      * @return 压缩后的路径
      */
     fun compressImage(filePath: String?, newFilePath: String?, size: Long): String {
-        return compressImage(filePath, newFilePath, 80, size)
+        return compressImage(filePath, newFilePath, QUALITY, size)
     }
 
     /**
@@ -84,7 +86,7 @@ class ZImgUtil {
      * @param size     超过这个长度才压缩(bytes)
      * @return 压缩后的路径
      */
-    fun compressImage(filePath: String?, newFilePath: String?, quality: Int = 80, size: Long): String {
+    fun compressImage(filePath: String?, newFilePath: String?, quality: Int, size: Long): String {
         filePath?.let {
             val oldFile = File(it)
             val length = oldFile.length()
@@ -99,8 +101,7 @@ class ZImgUtil {
                     if (degree != 0) {//旋转照片角度，防止头像横着显示
                         bm = setRotateAngle(degree, it1)
                     }
-                    var newFile: File?
-                    newFile = if(ZStringUtil.isEmpty(newFilePath)){
+                    var newFile: File? = if(ZStringUtil.isEmpty(newFilePath)){
                         oldFile
                     }else{
                         File(newFilePath, oldFile.name)
@@ -171,7 +172,7 @@ class ZImgUtil {
             options.inJustDecodeBounds = true//只解析图片边沿，获取宽高
             BitmapFactory.decodeFile(it, options)
             // 计算缩放比
-            options.inSampleSize = calculateInSampleSize(options, 480, 800)
+            options.inSampleSize = calculateInSampleSize(options, 720, 1280)
             // 完整解析图片返回bitmap
             options.inJustDecodeBounds = false
             return BitmapFactory.decodeFile(it, options)

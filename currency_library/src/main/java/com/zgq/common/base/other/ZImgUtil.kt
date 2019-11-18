@@ -27,6 +27,11 @@ class ZImgUtil {
     // 默认压缩比例
     private val QUALITY: Int = 90
 
+    private val MB_20: Long = 20971520
+    private val MB_50: Long = 52428800
+
+
+
     /**
      * 图片压缩-质量压缩
      * @param filePath 源图片路径
@@ -91,9 +96,18 @@ class ZImgUtil {
             val oldFile = File(it)
             val length = oldFile.length()
             ZLog.e("文件长度 = $length")
+            ZLog.e("文件路径 = $it")
+            ZLog.e("文件新路径 = ${newFilePath?: "没有新的路径"}")
             if(length <= size){// 文件长度 <= 传过来的固定长度，不执行压缩
                 return filePath
             }
+            var qualityB = quality
+            qualityB = if(length in (MB_20 + 1) until MB_50){// 大于20M，小于50M
+                if(qualityB > 90) 90 else qualityB
+            }else{
+                80
+            }
+            ZLog.e("压缩的比例 = $qualityB")
             if(!ZStringUtil.isEmpty(it)){
                 var bm: Bitmap? = getSmallBitmap(it)//获取一定尺寸的图片
                 val degree = getRotateAngle(it)//获取相片拍摄角度
@@ -108,7 +122,7 @@ class ZImgUtil {
                     }
                     try {
                         val out = FileOutputStream(newFile)
-                        bm?.compress(Bitmap.CompressFormat.JPEG, quality, out)
+                        bm?.compress(Bitmap.CompressFormat.JPEG, qualityB, out)
                         out?.close()
                     } catch (e: Exception) {
                         ZLog.e("压缩异常 = " + e.message)

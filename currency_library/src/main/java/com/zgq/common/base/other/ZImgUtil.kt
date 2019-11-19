@@ -102,10 +102,10 @@ class ZImgUtil {
                 return filePath
             }
             var qualityB = quality
-            qualityB = if(length in (MB_20 + 1) until MB_50){// 大于20M，小于50M
-                if(qualityB > 90) 90 else qualityB
-            }else{
-                80
+            if(length in (MB_20 + 1) until MB_50){// 大于20M，小于50M
+                qualityB = if(qualityB > 90) 90 else qualityB
+            }else if (length > MB_50){
+                qualityB = 80
             }
             ZLog.e("压缩的比例 = $qualityB")
             if(!ZStringUtil.isEmpty(it)){

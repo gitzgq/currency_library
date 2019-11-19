@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit
 object ZRetrofitManager{
 
     private var retrofit : Retrofit? = null
+    private var logDebug : Boolean = true
 
     /** 初始化Retrofit */
     fun retrofit(time : Long, interceptor: Interceptor, baseUrl : String) : Retrofit?{
@@ -25,7 +26,7 @@ object ZRetrofitManager{
             }
         })
         // 设置级别最高（全部都打印）
-        httpLogger?.level = HttpLoggingInterceptor.Level.BODY
+        httpLogger?.level = if(logDebug) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
         retrofit = Retrofit
                         .Builder()
                         .client(// 设置okHttp
@@ -48,6 +49,11 @@ object ZRetrofitManager{
     /** 获取注解接口 */
     fun <T> getService(cLass : Class<T>) : T? {
        return retrofit?.create(cLass)
+    }
+
+    /** 设置log打印 true：打印  false：不打印 */
+    fun setDebug(debug: Boolean){
+        logDebug = debug
     }
 
 }

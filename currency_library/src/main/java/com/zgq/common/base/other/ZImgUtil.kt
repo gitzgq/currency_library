@@ -100,6 +100,9 @@ class ZImgUtil {
      * @param size     超过这个长度才压缩(bytes)
      * @return 压缩后的路径
      */
+    fun compressImage(filePath: String?, newFilePath: String?, quality: Int, size: Long): String {
+        return compressImage(filePath, newFilePath, quality, size, C_W, C_H)
+    }
     fun compressImage(filePath: String?, newFilePath: String?, quality: Int, size: Long, w:Int, h:Int): String {
         filePath?.let {
             val oldFile = File(it)

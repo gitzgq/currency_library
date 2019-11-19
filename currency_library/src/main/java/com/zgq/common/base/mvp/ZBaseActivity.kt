@@ -14,8 +14,6 @@ open abstract class ZBaseActivity<P : ZBasePresenter<*>> : AppCompatActivity(), 
 
     /** Presenter */
     var mPresenter: P? = null
-    /** 设置状态栏沉浸式 */
-    private var immersionBar : ImmersionBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,24 +81,40 @@ open abstract class ZBaseActivity<P : ZBasePresenter<*>> : AppCompatActivity(), 
         return false
     }
 
+    /** 是否监听键盘 */
+    open fun isMonitorKeyboard() : Boolean{
+        return false
+    }
+
+    /** 监听键盘回调方法 true：显示  false：消失 */
+    open fun monitorKeyboard(isPopup: Boolean){}
+
+
     // 设置沉浸式状态栏
-    private fun setStatusStyle(){
-        if(null == immersionBar){
-            immersionBar = ImmersionBar.with(this)
+    private fun setStatusStyle() {
+        val immersionBar = ImmersionBar.with(this)
+        immersionBar?.let {
+                if (statusType() == TRANSPAREN) {
+                    // 直接沉浸式（顶部的标题直接沉浸到状态栏）
+                    it.transparentStatusBar()
+                } else {
+                    // 设置状态栏的颜色
+                    it.fitsSystemWindows(true)
+                    it.statusBarColor(statusColor())
+                }
+                // 当状态栏背景为亮色，手机不支持修改状态栏的字体颜色时调用此方法
+                if (statusTextColor()) {
+                    it.statusBarDarkFont(true)
+                }
+                // 监听键盘
+                if (isMonitorKeyboard()) {
+                    it.keyboardEnable(true)
+                    it.setOnKeyboardListener { isPopup, _ ->
+                        monitorKeyboard(isPopup)
+                    }
+                }
+                it.init()
         }
-        if(statusType() == TRANSPAREN){
-            // 直接沉浸式（顶部的标题直接沉浸到状态栏）
-            immersionBar?.transparentStatusBar()
-        }else{
-            // 设置状态栏的颜色
-            immersionBar?.fitsSystemWindows(true)
-            immersionBar?.statusBarColor(statusColor())
-        }
-        // 当状态栏背景为亮色，手机不支持修改状态栏的字体颜色时调用此方法
-        if(statusTextColor()){
-            immersionBar?.statusBarDarkFont(true)
-        }
-        immersionBar?.init()
     }
 
     /*** 是否使用EventBus true：使用   默认false */

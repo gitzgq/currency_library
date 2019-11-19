@@ -30,6 +30,9 @@ class ZImgUtil {
     private val MB_20: Long = 20971520
     private val MB_50: Long = 52428800
 
+    private val C_W = 480
+    private val C_H = 800
+
 
 
     /**
@@ -59,7 +62,10 @@ class ZImgUtil {
      * @return 压缩后的路径
      */
     fun compressImage(filePath: String?, quality: Int, size: Long): String {
-        return compressImage(filePath, filePath, quality, size)
+        return compressImage(filePath, filePath, quality, size, C_W, C_H)
+    }
+    fun compressImage(filePath: String?, quality: Int, size: Long, w:Int, h:Int): String {
+        return compressImage(filePath, filePath, quality, size, w, h)
     }
 
     /**
@@ -80,7 +86,10 @@ class ZImgUtil {
      * @return 压缩后的路径
      */
     fun compressImage(filePath: String?, newFilePath: String?, size: Long): String {
-        return compressImage(filePath, newFilePath, QUALITY, size)
+        return compressImage(filePath, newFilePath, QUALITY, size, C_W, C_H)
+    }
+    fun compressImage(filePath: String?, newFilePath: String?, size: Long, w:Int, h:Int): String {
+        return compressImage(filePath, newFilePath, QUALITY, size, w, h)
     }
 
     /**
@@ -91,7 +100,7 @@ class ZImgUtil {
      * @param size     超过这个长度才压缩(bytes)
      * @return 压缩后的路径
      */
-    fun compressImage(filePath: String?, newFilePath: String?, quality: Int, size: Long): String {
+    fun compressImage(filePath: String?, newFilePath: String?, quality: Int, size: Long, w:Int, h:Int): String {
         filePath?.let {
             val oldFile = File(it)
             val length = oldFile.length()
@@ -109,7 +118,7 @@ class ZImgUtil {
             }
             ZLog.e("压缩的比例 = $qualityB")
             if(!ZStringUtil.isEmpty(it)){
-                var bm: Bitmap? = getSmallBitmap(it)//获取一定尺寸的图片
+                var bm: Bitmap? = getSmallBitmap(it, w, h)//获取一定尺寸的图片
                 val degree = getRotateAngle(it)//获取相片拍摄角度
                 bm?.let { it1 ->
                     if (degree != 0) {//旋转照片角度，防止头像横着显示
@@ -181,12 +190,17 @@ class ZImgUtil {
      * 根据路径获得图片信息并按比例压缩，返回bitmap
      */
     fun getSmallBitmap(filePath: String?): Bitmap? {
+        return getSmallBitmap(filePath, C_W, C_H)
+    }
+
+    fun getSmallBitmap(filePath: String?, w:Int, h:Int): Bitmap? {
+        ZLog.e("压缩尺寸大小 = $w + $h")
         filePath?.let {
             val options = BitmapFactory.Options()
             options.inJustDecodeBounds = true//只解析图片边沿，获取宽高
             BitmapFactory.decodeFile(it, options)
             // 计算缩放比
-            options.inSampleSize = calculateInSampleSize(options, 720, 1280)
+            options.inSampleSize = calculateInSampleSize(options, w, h)
             // 完整解析图片返回bitmap
             options.inJustDecodeBounds = false
             return BitmapFactory.decodeFile(it, options)
@@ -266,7 +280,7 @@ class ZImgUtil {
                     if(size <= 0){
                         return path
                     }
-                    return compressImage(path, context.getExternalFilesDir("COMPRESS_IMG")?.path, quality, size)
+                    return compressImage(path, context.getExternalFilesDir("COMPRESS_IMG")?.path, quality, size, C_W, C_H)
                 } catch (e: Exception) {
                     ZLog.e("异常 = " + e.message)
                 } finally {
@@ -277,7 +291,7 @@ class ZImgUtil {
                 if(size <= 0){
                     return uri.path?: ""
                 }
-                return compressImage(path, context.getExternalFilesDir("COMPRESS_IMG")?.path, quality, size)
+                return compressImage(path, context.getExternalFilesDir("COMPRESS_IMG")?.path, quality, size, C_W, C_H)
             }
             return ""
         }

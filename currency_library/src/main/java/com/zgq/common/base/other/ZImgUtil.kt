@@ -30,8 +30,8 @@ class ZImgUtil {
     private val MB_20: Long = 20971520
     private val MB_50: Long = 52428800
 
-    private val C_W = 480
-    private val C_H = 800
+    private val C_W = 1080
+    private val C_H = 1920
 
 
 

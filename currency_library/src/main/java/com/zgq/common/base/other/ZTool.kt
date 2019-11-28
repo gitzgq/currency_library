@@ -157,17 +157,23 @@ object ZTool {
     fun md5(content: String?): String {
         content?.let {content ->
             try {
-                val md5 = MessageDigest.getInstance("MD5")
-                val bytes = md5.digest(content.toByteArray())
-                var result = ""
-                for (b in bytes) {
-                    var temp = Integer.toHexString((b and 0xff.toByte()).toInt())
-                    if (temp.length == 1) {
-                        temp = "0$temp"
+                //获取md5加密对象
+                val instance: MessageDigest = MessageDigest.getInstance("MD5")
+                //对字符串加密，返回字节数组
+                val digest:ByteArray = instance.digest(content.toByteArray())
+                val sb = StringBuffer()
+                for (b in digest) {
+                    //获取低八位有效值
+                    var i :Int = b.toInt() and 0xff
+                    //将整数转化为16进制
+                    var hexString = Integer.toHexString(i)
+                    if (hexString.length < 2) {
+                        //如果是一位的话，补0
+                        hexString = "0$hexString"
                     }
-                    result += temp
+                    sb.append(hexString)
                 }
-                return result.toUpperCase()
+                return sb.toString()
             } catch (e: NoSuchAlgorithmException) {
                 e.printStackTrace()
             }

@@ -64,7 +64,7 @@ class ZSelectImg {
                 callBack?.let { callBack ->
                     val path : String = ZImgUtil.instence.uriToPath(context, uri)
                     ZLog.e("获取的路径 = $path")
-                    callBack?.onFinish(path)
+                    callBack?.onFinish(path, uri)
                 }
             }
         }
@@ -75,7 +75,7 @@ class ZSelectImg {
      * 选择图片回调接口
      */
     interface OnSelectImgCallBack{
-        fun onFinish(path : String)
+        fun onFinish(path : String, uri: Uri)
     }
 
 }

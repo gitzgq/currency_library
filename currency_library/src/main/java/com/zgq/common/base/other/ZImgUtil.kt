@@ -10,10 +10,8 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.util.Base64
 import androidx.loader.content.CursorLoader
+import java.io.*
 
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import kotlin.math.roundToInt
 
 /**
@@ -21,9 +19,10 @@ import kotlin.math.roundToInt
  */
 class ZImgUtil {
 
-    companion object{
-        val instence : ZImgUtil by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) { ZImgUtil() }
+    companion object {
+        val instence: ZImgUtil by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) { ZImgUtil() }
     }
+
     // 默认压缩比例
     private val QUALITY: Int = 90
 
@@ -32,7 +31,6 @@ class ZImgUtil {
 
     private val C_W = 1080
     private val C_H = 1920
-
 
 
     /**
@@ -64,7 +62,8 @@ class ZImgUtil {
     fun compressImage(filePath: String?, quality: Int, size: Long): String {
         return compressImage(filePath, filePath, quality, size, C_W, C_H)
     }
-    fun compressImage(filePath: String?, quality: Int, size: Long, w:Int, h:Int): String {
+
+    fun compressImage(filePath: String?, quality: Int, size: Long, w: Int, h: Int): String {
         return compressImage(filePath, filePath, quality, size, w, h)
     }
 
@@ -88,7 +87,8 @@ class ZImgUtil {
     fun compressImage(filePath: String?, newFilePath: String?, size: Long): String {
         return compressImage(filePath, newFilePath, QUALITY, size, C_W, C_H)
     }
-    fun compressImage(filePath: String?, newFilePath: String?, size: Long, w:Int, h:Int): String {
+
+    fun compressImage(filePath: String?, newFilePath: String?, size: Long, w: Int, h: Int): String {
         return compressImage(filePath, newFilePath, QUALITY, size, w, h)
     }
 
@@ -103,33 +103,34 @@ class ZImgUtil {
     fun compressImage(filePath: String?, newFilePath: String?, quality: Int, size: Long): String {
         return compressImage(filePath, newFilePath, quality, size, C_W, C_H)
     }
-    fun compressImage(filePath: String?, newFilePath: String?, quality: Int, size: Long, w:Int, h:Int): String {
+
+    fun compressImage(filePath: String?, newFilePath: String?, quality: Int, size: Long, w: Int, h: Int): String {
         filePath?.let {
             val oldFile = File(it)
             val length = oldFile.length()
             ZLog.e("文件长度 = $length")
             ZLog.e("文件路径 = $it")
-            ZLog.e("文件新路径 = ${newFilePath?: "没有新的路径"}")
-            if(length <= size){// 文件长度 <= 传过来的固定长度，不执行压缩
+            ZLog.e("文件新路径 = ${newFilePath ?: "没有新的路径"}")
+            if (length <= size) {// 文件长度 <= 传过来的固定长度，不执行压缩
                 return filePath
             }
             var qualityB = quality
-            if(length in (MB_20 + 1) until MB_50){// 大于20M，小于50M
-                qualityB = if(qualityB > 90) 90 else qualityB
-            }else if (length > MB_50){
+            if (length in (MB_20 + 1) until MB_50) {// 大于20M，小于50M
+                qualityB = if (qualityB > 90) 90 else qualityB
+            } else if (length > MB_50) {
                 qualityB = 80
             }
             ZLog.e("压缩的比例 = $qualityB")
-            if(!ZStringUtil.isEmpty(it)){
+            if (!ZStringUtil.isEmpty(it)) {
                 var bm: Bitmap? = getSmallBitmap(it, w, h)//获取一定尺寸的图片
                 val degree = getRotateAngle(it)//获取相片拍摄角度
                 bm?.let { it1 ->
                     if (degree != 0) {//旋转照片角度，防止头像横着显示
                         bm = setRotateAngle(degree, it1)
                     }
-                    var newFile: File? = if(ZStringUtil.isEmpty(newFilePath)){
+                    var newFile: File? = if (ZStringUtil.isEmpty(newFilePath)) {
                         oldFile
-                    }else{
+                    } else {
                         File(newFilePath, oldFile.name)
                     }
                     try {
@@ -140,7 +141,7 @@ class ZImgUtil {
                         ZLog.e("压缩异常 = " + e.message)
                         return it
                     }
-                    return newFile?.path?: it
+                    return newFile?.path ?: it
                 }
             }
         }
@@ -196,7 +197,7 @@ class ZImgUtil {
         return getSmallBitmap(filePath, C_W, C_H)
     }
 
-    fun getSmallBitmap(filePath: String?, w:Int, h:Int): Bitmap? {
+    fun getSmallBitmap(filePath: String?, w: Int, h: Int): Bitmap? {
         ZLog.e("压缩尺寸大小 = $w + $h")
         filePath?.let {
             val options = BitmapFactory.Options()
@@ -239,12 +240,59 @@ class ZImgUtil {
             return try {
                 val bytes = Base64.decode(it, Base64.DEFAULT)
                 BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 null
             }
         }
         return null
 
+    }
+
+    /**
+     * 图片转Base64
+     * path 图片路径
+     */
+    fun imgToBase64(path: String?): String {
+        if (ZStringUtil.isEmpty(path)) {
+            return ""
+        }
+        ZLog.e("图片路径 = $path")
+        try {
+            return imgToBase64(FileInputStream(path))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return ""
+    }
+
+    /**
+     * 图片转Base64
+     * inputStream IO
+     */
+    fun imgToBase64(inputStream: InputStream): String {
+        var result = ""
+        try {
+            inputStream?.let { inputStream ->
+                //创建一个字符流大小的数组。
+                val data = ByteArray(inputStream.available())
+                //写入数组
+                inputStream.read(data)
+                //用默认的编码格式进行编码
+                result = Base64.encodeToString(data, Base64.NO_CLOSE)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            inputStream?.let {
+                try {
+                    it.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        ZLog.e("转换base64之后 = $result")
+        return result
     }
 
     /**
@@ -266,8 +314,8 @@ class ZImgUtil {
      * @return
      */
     fun uriToPath(context: Context?, uri: Uri?, quality: Int, size: Long): String {
-        context?.let { context->
-            uri?.let { uri->
+        context?.let { context ->
+            uri?.let { uri ->
                 //由打印的contentUri可以看到：2种结构。正常的是：content://那么这种就要去数据库读取path。
                 //另外一种是Uri是 file:///那么这种是 Uri.fromFile(File file);得到的
                 val projection = arrayOf(MediaStore.Images.Media.DATA)
@@ -276,11 +324,11 @@ class ZImgUtil {
                     val loader = CursorLoader(context, uri, projection, null, null, null)
                     cursor = loader.loadInBackground()
 
-                    val column_index : Int = cursor?.getColumnIndex(projection[0])?: 0
+                    val column_index: Int = cursor?.getColumnIndex(projection[0]) ?: 0
                     cursor?.moveToFirst()
                     //如果是正常的查询到数据库。然后返回结构
-                    val path = cursor?.getString(column_index)?: ""
-                    if(size <= 0){
+                    val path = cursor?.getString(column_index) ?: ""
+                    if (size <= 0) {
                         return path
                     }
                     return compressImage(path, context.getExternalFilesDir("COMPRESS_IMG")?.path, quality, size, C_W, C_H)
@@ -290,9 +338,9 @@ class ZImgUtil {
                     cursor?.close()
                 }
                 //如果是文件。Uri.fromFile(File file)生成的uri。那么下面这个方法可以得到结果
-                val path = uri.path?: ""
-                if(size <= 0){
-                    return uri.path?: ""
+                val path = uri.path ?: ""
+                if (size <= 0) {
+                    return uri.path ?: ""
                 }
                 return compressImage(path, context.getExternalFilesDir("COMPRESS_IMG")?.path, quality, size, C_W, C_H)
             }

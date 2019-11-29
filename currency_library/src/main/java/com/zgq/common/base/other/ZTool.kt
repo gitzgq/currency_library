@@ -138,8 +138,8 @@ object ZTool {
             ZLog.e("手机制造商 = " + Build.PRODUCT)
             ZLog.e("TIME = " + Build.TIME)
             ZLog.e("版本 = " + Build.MODEL)
-            val deviceId = Build.BOARD + Build.BRAND + Build.FINGERPRINT + Build.HARDWARE + Build.MANUFACTURER + Build.SERIAL +
-                    Build.PRODUCT + Build.TIME + Build.MODEL + androidId(context)
+            val deviceId = Build.BOARD + Build.BRAND + Build.HARDWARE + Build.MANUFACTURER + Build.SERIAL +
+                    Build.PRODUCT + Build.TIME + Build.MODEL + "-" + androidId(context) + "-" + buildId()
             ZLog.e("加密前deviceId = $deviceId")
             ZLog.e("加密后deviceId = " + md5(deviceId))
             return md5(deviceId)
@@ -153,6 +153,19 @@ object ZTool {
             return Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
         }
         return ""
+    }
+
+    /** 硬件信息 拼接成一串数字 */
+    fun buildId(): String{
+        return "1103" +
+                Build.BOARD.length % 10 +
+                Build.BRAND.length % 10 +
+                Build.HARDWARE.length % 10 +
+                Build.MANUFACTURER.length % 10 +
+                Build.SERIAL.length % 10 +
+                Build.PRODUCT.length % 10 +
+                Build.MODEL.length % 10 +
+                Build.TIME
     }
 
     /**

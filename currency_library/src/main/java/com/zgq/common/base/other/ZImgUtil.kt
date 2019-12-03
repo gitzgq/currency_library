@@ -282,7 +282,7 @@ class ZImgUtil {
                 //写入数组
                 inputStream.read(data)
                 //用默认的编码格式进行编码
-                result = Base64.encodeToString(data, Base64.NO_CLOSE)
+                result = Base64.encodeToString(data, Base64.DEFAULT)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -290,12 +290,12 @@ class ZImgUtil {
             inputStream?.let {
                 try {
                     it.close()
+                    ZLog.e("关闭转换流")
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
             }
         }
-        ZLog.e("转换base64之后 = $result")
         return result
     }
 

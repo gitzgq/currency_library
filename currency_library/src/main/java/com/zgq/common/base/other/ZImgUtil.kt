@@ -306,6 +306,7 @@ class ZImgUtil {
     }
 
     /**
+     *
      * Uri转path
      * @param context
      * @param uri
@@ -345,6 +346,65 @@ class ZImgUtil {
                 return compressImage(path, context.getExternalFilesDir("COMPRESS_IMG")?.path, quality, size, C_W, C_H)
             }
             return ""
+        }
+        return ""
+    }
+
+    /**
+     * 获取文件名称
+     * path 文件的绝对路径(例：xxx/xxx/xxx.jpg)
+     * */
+    fun fileName(path: String): String{
+        if(!ZStringUtil.isEmpty(path)){
+            return File(path).name
+        }
+        return "${System.currentTimeMillis()}.jpg"
+    }
+
+    /**
+     * Uri先把文件复制到指定文件夹，然后返回图片的绝对路径
+     * uri 图片uri
+     * filePath 指定文件夹的文件的路径（例：xxx/xxx/xx.jpg）
+     */
+    fun uriCopyToPath(context: Context, uri: Uri?, filePath: String): String{
+        if(ZStringUtil.isEmpty(filePath)){
+            return ""
+        }
+        return uriCopyToPath(context, uri, File(filePath))
+    }
+
+    /**
+     * Uri先把文件复制到指定文件夹，然后返回图片的绝对路径
+     * uri 图片uri
+     * newFile 指定文件夹的文件
+     */
+    fun uriCopyToPath(context: Context, uri: Uri?, newFile: File): String{
+        context?.let {context ->
+            uri?.let { uri ->
+                newFile?.let {newFile ->
+                    ZLog.e("文件路径 = ${newFile.path}")
+                    try {
+                        // 新的文件
+                        val fos = FileOutputStream(newFile)
+                        // uri转成IO
+                        val inputStream = context.contentResolver.openInputStream(uri)
+                        // 读取
+                        val bis = BufferedInputStream(inputStream)
+                        val buffer = ByteArray(1024)
+                        var len: Int
+                        while (((bis.read(buffer)).also { len = it }) != -1) {
+                            // 写入
+                            fos.write(buffer, 0, len)
+                        }
+                        fos?.close()
+                        bis?.close()
+                        inputStream?.close()
+                        return newFile.path?: ""
+                    }catch (e: Exception){
+                        return ""
+                    }
+                }
+            }
         }
         return ""
     }

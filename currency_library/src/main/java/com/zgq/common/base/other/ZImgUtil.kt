@@ -105,11 +105,14 @@ class ZImgUtil {
     }
 
     fun compressImage(filePath: String?, newFilePath: String?, quality: Int, size: Long, w: Int, h: Int): String {
+        if(ZStringUtil.isEmpty(filePath)){
+            return ""
+        }
         filePath?.let {
             val oldFile = File(it)
             val length = oldFile.length()
             ZLog.e("文件长度 = $length")
-            ZLog.e("文件路径 = $it")
+            ZLog.e("文件完整路径 = $it")
             ZLog.e("文件新路径 = ${newFilePath ?: "没有新的路径"}")
             if (length <= size) {// 文件长度 <= 传过来的固定长度，不执行压缩
                 return filePath
@@ -137,6 +140,7 @@ class ZImgUtil {
                         val out = FileOutputStream(newFile)
                         bm?.compress(Bitmap.CompressFormat.JPEG, qualityB, out)
                         out?.close()
+                        ZLog.e("文件完整新路径 = ${newFile?.path}")
                     } catch (e: Exception) {
                         ZLog.e("压缩异常 = " + e.message)
                         return it
@@ -354,8 +358,8 @@ class ZImgUtil {
      * 获取文件名称
      * path 文件的绝对路径(例：xxx/xxx/xxx.jpg)
      * */
-    fun fileName(path: String): String{
-        if(!ZStringUtil.isEmpty(path)){
+    fun fileName(path: String): String {
+        if (!ZStringUtil.isEmpty(path)) {
             return File(path).name
         }
         return "${System.currentTimeMillis()}.jpg"
@@ -366,11 +370,11 @@ class ZImgUtil {
      * uri 图片uri
      * filePath 指定文件夹的文件的路径（例：xxx/xxx/xx.jpg）
      */
-    fun uriCopyToPath(context: Context, uri: Uri?, filePath: String): String{
-        if(ZStringUtil.isEmpty(filePath)){
+    fun uriCopyToPath(context: Context, uri: Uri?, filePath: String): String {
+        if (ZStringUtil.isEmpty(filePath)) {
             return ""
         }
-        return uriCopyToPath(context, uri, File(filePath))
+        return copyFileToNewPath(context, uri, FileOutputStream(filePath), filePath)
     }
 
     /**
@@ -378,14 +382,18 @@ class ZImgUtil {
      * uri 图片uri
      * newFile 指定文件夹的文件
      */
-    fun uriCopyToPath(context: Context, uri: Uri?, newFile: File): String{
-        context?.let {context ->
+    fun uriCopyToPath(context: Context, uri: Uri?, newFile: File): String {
+        return copyFileToNewPath(context, uri, FileOutputStream(newFile), newFile.path)
+    }
+
+    /**
+     * 把当前图片的uri读取，写入到另一个指定文件的路径下
+     */
+    private fun copyFileToNewPath(context: Context, uri: Uri?, fos: FileOutputStream, newPath: String?): String {
+        context?.let { context ->
             uri?.let { uri ->
-                newFile?.let {newFile ->
-                    ZLog.e("文件路径 = ${newFile.path}")
+                fos?.let { fos ->
                     try {
-                        // 新的文件
-                        val fos = FileOutputStream(newFile)
                         // uri转成IO
                         val inputStream = context.contentResolver.openInputStream(uri)
                         // 读取
@@ -399,8 +407,8 @@ class ZImgUtil {
                         fos?.close()
                         bis?.close()
                         inputStream?.close()
-                        return newFile.path?: ""
-                    }catch (e: Exception){
+                        return newPath?: ""
+                    } catch (e: Exception) {
                         return ""
                     }
                 }
@@ -408,6 +416,4 @@ class ZImgUtil {
         }
         return ""
     }
-
-
 }

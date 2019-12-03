@@ -33,16 +33,32 @@ class ZGlide{
         loadImg(context, img, obj, DEFAULT_IMG, true)
     }
 
+    fun loadImg(context: Context?, img: ImageView?, obj: Any?, w: Int, h: Int){
+        loadImg(context, img, obj, DEFAULT_IMG, true, w, h)
+    }
+
     fun loadImg(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int){
         loadImg(context, img, obj, defaultImg, true)
+    }
+
+    fun loadImg(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, w: Int, h: Int){
+        loadImg(context, img, obj, defaultImg, true, w, h)
     }
 
     fun loadImg(context: Context?, img: ImageView?, obj: Any?, cache: Boolean){
         loadImg(context, img, obj, DEFAULT_IMG, cache)
     }
 
+    fun loadImg(context: Context?, img: ImageView?, obj: Any?, cache: Boolean, w: Int, h: Int){
+        loadImg(context, img, obj, DEFAULT_IMG, cache, w, h)
+    }
+
     fun loadImg(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, cache: Boolean){
         glide(context, img, obj, defaultImg, cache, TYPE_DEFAULT, 0, null)
+    }
+
+    fun loadImg(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, cache: Boolean, w: Int, h: Int){
+        glide(context, img, obj, defaultImg, cache, TYPE_DEFAULT, 0, null, w, h)
     }
 
     /**
@@ -52,16 +68,34 @@ class ZGlide{
         loadRoundImg(context, img, obj, DEFAULT_IMG, true, ROUND_SIZE, ZRoundTransformation.CornerType.ALL)
     }
 
+    fun loadRoundImg(context: Context?, img: ImageView?, obj: Any?, w: Int, h: Int){
+        loadRoundImg(context, img, obj, DEFAULT_IMG, true, ROUND_SIZE, ZRoundTransformation.CornerType.ALL, w, h)
+    }
+
     fun loadRoundImg(context: Context?, img: ImageView?, obj: Any?, roundSize: Int){
         loadRoundImg(context, img, obj, DEFAULT_IMG, true, roundSize, ZRoundTransformation.CornerType.ALL)
+    }
+
+    fun loadRoundImg(context: Context?, img: ImageView?, obj: Any?, roundSize: Int, w: Int, h: Int){
+        loadRoundImg(context, img, obj, DEFAULT_IMG, true, roundSize, ZRoundTransformation.CornerType.ALL, w, h)
     }
 
     fun loadRoundImg(context: Context?, img: ImageView?, obj: Any?, cache: Boolean){
         loadRoundImg(context, img, obj, DEFAULT_IMG, cache, ROUND_SIZE, ZRoundTransformation.CornerType.ALL)
     }
 
-    fun loadRoundImg(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, cache: Boolean, roundSize : Int, roundType: ZRoundTransformation.CornerType?){
+    fun loadRoundImg(context: Context?, img: ImageView?, obj: Any?, cache: Boolean, w: Int, h: Int){
+        loadRoundImg(context, img, obj, DEFAULT_IMG, cache, ROUND_SIZE, ZRoundTransformation.CornerType.ALL, w, h)
+    }
+
+    fun loadRoundImg(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, cache: Boolean, roundSize : Int,
+                     roundType: ZRoundTransformation.CornerType?){
         glide(context, img, obj, defaultImg, cache, TYPE_ROUND, roundSize, roundType)
+    }
+
+    fun loadRoundImg(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, cache: Boolean, roundSize : Int,
+                     roundType: ZRoundTransformation.CornerType?, w: Int, h: Int){
+        glide(context, img, obj, defaultImg, cache, TYPE_ROUND, roundSize, roundType, w, h)
     }
 
     /**
@@ -71,16 +105,32 @@ class ZGlide{
         loadCircleImg(context, img, obj, DEFAULT_IMG, true)
     }
 
+    fun loadCircleImg(context: Context?, img: ImageView?, obj: Any?, w: Int, h: Int){
+        loadCircleImg(context, img, obj, DEFAULT_IMG, true, w, h)
+    }
+
     fun loadCircleImg(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int){
         loadCircleImg(context, img, obj, defaultImg, true)
+    }
+
+    fun loadCircleImg(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, w: Int, h: Int){
+        loadCircleImg(context, img, obj, defaultImg, true, w, h)
     }
 
     fun loadCircleImg(context: Context?, img: ImageView?, obj: Any?, cache: Boolean){
         loadCircleImg(context, img, obj, DEFAULT_IMG, cache)
     }
 
+    fun loadCircleImg(context: Context?, img: ImageView?, obj: Any?, cache: Boolean, w: Int, h: Int){
+        loadCircleImg(context, img, obj, DEFAULT_IMG, cache, w, h)
+    }
+
     fun loadCircleImg(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, cache: Boolean){
         glide(context, img, obj, defaultImg, cache, TYPE_CIRCLE, 0, null)
+    }
+
+    fun loadCircleImg(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, cache: Boolean, w: Int, h: Int){
+        glide(context, img, obj, defaultImg, cache, TYPE_CIRCLE, 0, null, w, h)
     }
 
     /**
@@ -90,23 +140,43 @@ class ZGlide{
         loadOriginal(context, img, obj, DEFAULT_IMG, true)
     }
 
+    fun loadOriginal(context: Context?, img: ImageView?, obj: Any?, w: Int, h: Int){
+        loadOriginal(context, img, obj, DEFAULT_IMG, true, w, h)
+    }
+
     fun loadOriginal(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int){
         loadOriginal(context, img, obj, defaultImg, true)
+    }
+    fun loadOriginal(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, w: Int, h: Int){
+        loadOriginal(context, img, obj, defaultImg, true, w, h)
     }
 
     fun loadOriginal(context: Context?, img: ImageView?, obj: Any?, cache: Boolean){
         loadOriginal(context, img, obj, DEFAULT_IMG, cache)
     }
 
+    fun loadOriginal(context: Context?, img: ImageView?, obj: Any?, cache: Boolean, w: Int, h: Int){
+        loadOriginal(context, img, obj, DEFAULT_IMG, cache, w, h)
+    }
+
     fun loadOriginal(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, cache: Boolean){
         glide(context, img, obj, defaultImg, cache, TYPE_ORIGINAL, 0, null)
+    }
+
+    fun loadOriginal(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, cache: Boolean, w: Int, h: Int){
+        glide(context, img, obj, defaultImg, cache, TYPE_ORIGINAL, 0, null, w, h)
     }
 
 
     /**
      * 执行加载图片的方法
      */
-    private fun glide(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, cache: Boolean, type: Int, roundSize: Int, roundType: ZRoundTransformation.CornerType?){
+    private fun glide(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, cache: Boolean, type: Int,
+                      roundSize: Int, roundType: ZRoundTransformation.CornerType?){
+        glide(context, img, obj, defaultImg, cache, type, roundSize, roundType, -1, -1)
+    }
+    private fun glide(context: Context?, img: ImageView?, obj: Any?, defaultImg: Int, cache: Boolean, type: Int,
+                      roundSize: Int, roundType: ZRoundTransformation.CornerType?, w: Int, h: Int){
         if(null == context || null == img || null == obj){
             return
         }
@@ -129,6 +199,10 @@ class ZGlide{
             options.centerCrop()
         }else if(type == TYPE_ORIGINAL){ // 原图
             img.adjustViewBounds = true // 图片宽度填满，高度自适配
+        }
+        // 设置图片的大小
+        if(w > 0 && h > 0){
+            options.override(w, h)
         }
         Glide.with(context)
              .load(obj)

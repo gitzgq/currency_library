@@ -46,7 +46,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
     // 沉浸式(https://github.com/gyf-dev/ImmersionBar)
-    api 'com.gyf.immersionbar:immersionbar:3.0.0-beta07'
+    api 'com.gyf.immersionbar:immersionbar:3.0.0'
 
     // 最基础的架构，仅提供了系统默认的图片选择器和拍照功能(https://github.com/qingmei2/RxImagePicker)
     api 'com.github.qingmei2:rximagepicker:2.5.2'

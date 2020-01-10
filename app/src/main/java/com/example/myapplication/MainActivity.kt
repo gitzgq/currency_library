@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import MainPresenter
 import android.content.Intent
+import android.net.Uri
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.adapter.CommenRecylerViewAdapter
@@ -43,8 +44,7 @@ class MainActivity : ZBasePermissionActivity<MainPresenter>(), ZRecyclerView.OnZ
             checkPermission(permissions, object : ZPermission.OnPermissionCallBack {
                 override fun onAgree() {
                     ZSelectImg.instence.openAlbum(this@MainActivity, object : ZSelectImg.OnSelectImgCallBack{
-                        override fun onFinish(path: String) {
-                            ZLog.e("path = $path")
+                        override fun onFinish(path: String, uri: Uri) {
                         }
                     })
                 }

@@ -2,17 +2,14 @@ package com.zgq.common.base.mvp
 
 import io.reactivex.disposables.CompositeDisposable
 
+/**
+ * MVP - model基类
+ */
 open class ZBaseModel(basePresenter: ZBasePresenter<*>) {
 
-    var disposable: CompositeDisposable? = null
-
-    init {
-        disposable = CompositeDisposable()
-    }
+    val disposable: CompositeDisposable = CompositeDisposable()
 
     open fun clearNetWork() {
-        disposable?.let {
-            it.clear()
-        }
+        disposable.clear()
     }
 }

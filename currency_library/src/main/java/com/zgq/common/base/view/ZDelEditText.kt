@@ -10,6 +10,9 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import com.zgq.common.base.R
 
+/**
+ * 自定义带删除按钮的输入框
+ */
 class ZDelEditText : AppCompatEditText, View.OnFocusChangeListener, TextWatcher {
 
     // 删除按钮

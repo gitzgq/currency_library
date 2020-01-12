@@ -290,10 +290,10 @@ class ZRoundTransformation @JvmOverloads constructor(
 
     override fun equals(o: Any?): Boolean {
         return o is ZRoundTransformation &&
-                (o as ZRoundTransformation).radius === radius &&
-                (o as ZRoundTransformation).diameter === diameter &&
-                (o as ZRoundTransformation).margin === margin &&
-                (o as ZRoundTransformation).cornerType === cornerType
+                o.radius === radius &&
+                o.diameter === diameter &&
+                o.margin === margin &&
+                o.cornerType === cornerType
     }
 
     override fun hashCode(): Int {

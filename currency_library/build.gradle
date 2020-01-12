@@ -12,13 +12,6 @@ android {
         targetSdkVersion 29
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
 }
 
 dependencies {
@@ -32,11 +25,14 @@ dependencies {
     // 解决65536
     api 'androidx.multidex:multidex:2.0.0'
 
-    // 网络请求相关
-    api 'com.squareup.retrofit2:retrofit:2.6.1'
-    api 'com.squareup.retrofit2:converter-gson:2.6.1'
-    api 'com.squareup.okhttp3:logging-interceptor:4.1.0'
-    api 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    // retrofit相关
+    api 'com.squareup.retrofit2:retrofit:2.7.1'
+    api 'com.squareup.retrofit2:adapter-rxjava2:2.7.1'
+    api 'com.squareup.retrofit2:converter-gson:2.7.1'
+    api 'com.squareup.okhttp3:logging-interceptor:4.3.1'
+
+    // rxjava2
+    api 'io.reactivex.rxjava2:rxjava:2.2.16'
     api 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
     // 图片Glide（https://muyangmin.github.io/glide-docs-cn/doc/download-setup.html）

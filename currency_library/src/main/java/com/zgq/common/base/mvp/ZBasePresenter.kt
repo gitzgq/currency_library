@@ -2,24 +2,19 @@ package com.zgq.common.base.mvp
 
 import java.lang.ref.WeakReference
 
+/**
+ * MVP - presenter基类
+ */
 open class ZBasePresenter<V : ZBaseView>(view: ZBaseView) {
 
-    private var weakReference: WeakReference<*>? = null
-
-    init {
-        weakReference = WeakReference(view)
-    }
+    private val weakReference: WeakReference<*> = WeakReference(view)
 
     open fun getView(): V? {
-        return if (null != weakReference) {
-            weakReference?.get() as V
-        } else null
+        return weakReference.get() as V
     }
 
     open fun clear(){
-        weakReference?.let {
-            it.clear()
-        }
+        weakReference.clear()
     }
 
 }

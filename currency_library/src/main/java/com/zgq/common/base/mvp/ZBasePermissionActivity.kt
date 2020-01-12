@@ -4,6 +4,9 @@ import android.content.pm.PackageManager
 import com.zgq.common.base.other.ZPermission
 import com.zgq.common.base.other.ZToast
 
+/**
+ * activity权限请求基类
+ */
 open abstract class ZBasePermissionActivity<P : ZBasePresenter<*>> : ZBaseActivity<P>(){
 
     // 权限回调接口
@@ -46,7 +49,7 @@ open abstract class ZBasePermissionActivity<P : ZBasePresenter<*>> : ZBaseActivi
      */
     fun checkPermission(permissions: Array<String>?, requestCode: Int, callBack : ZPermission.OnPermissionCallBack) : Boolean{
         if(ZPermission.checkPermission(this, permissions, requestCode)){
-            callBack?.onAgree()
+            callBack.onAgree()
             return true
         }
         this.permissionCallBack = callBack

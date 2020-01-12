@@ -3,11 +3,13 @@ package com.example.myapplication
 import MainPresenter
 import android.content.Intent
 import android.net.Uri
+import android.provider.MediaStore
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.adapter.CommenRecylerViewAdapter
 import com.example.myapplication.bean.Template101Bean
 import com.zgq.common.base.data.ZEventData
+import com.zgq.common.base.glide.ZGlide
 import com.zgq.common.base.glide.ZSelectImg
 import com.zgq.common.base.mvp.ZBasePermissionActivity
 import com.zgq.common.base.other.ZLog
@@ -17,14 +19,15 @@ import com.zgq.common.base.view.ZRecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import java.io.File
+import java.net.URI
 
 class MainActivity : ZBasePermissionActivity<MainPresenter>(), ZRecyclerView.OnZLoadMoreListener {
 
 
     var mAdapter : CommenRecylerViewAdapter? = null
-    var mListData = mutableListOf<Any>()
+    var mListData = ArrayList<Any>()
     var pageIndex : Int = 1
-    var size : String = "1"
 
     override val contentView: Int
         get() = R.layout.activity_main
@@ -39,29 +42,17 @@ class MainActivity : ZBasePermissionActivity<MainPresenter>(), ZRecyclerView.OnZ
         mRecyclerView?.setOnZLoadMoreListener(this)
         mPresenter?.loadBanner()
 
-        var permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        var permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         m_main_fwgxwj?.setOnClickListener {
             checkPermission(permissions, object : ZPermission.OnPermissionCallBack {
                 override fun onAgree() {
                     ZSelectImg.instence.openAlbum(this@MainActivity, object : ZSelectImg.OnSelectImgCallBack{
-                        override fun onFinish(path: String, uri: Uri) {
+                        override fun onFinish(uri: Uri) {
+                            ZGlide.instence.loadImg(this@MainActivity, mIvImg, uri)
                         }
                     })
                 }
             })
-        }
-
-        m_main_tv_title_ccfwkj.setOnClickListener {
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                addCategory(Intent.CATEGORY_OPENABLE)
-                // Filter to show only images, using the image MIME data type.
-                // If one wanted to search for ogg vorbis files, the type would be "audio/ogg".
-                // To search for all documents available via installed storage providers,
-                // it would be "*/*".
-                type = "image/*"
-            }
-
-            startActivityForResult(intent, 11)
         }
 
     }

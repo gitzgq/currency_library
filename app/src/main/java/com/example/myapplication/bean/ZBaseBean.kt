@@ -1,5 +1,8 @@
-package com.zgq.common.base.data
+package com.example.myapplication.bean
 
+/**
+ * json数据公共字段
+ */
 class ZBaseBean<T>{
     var code: Int = -1
     var message: String? = null

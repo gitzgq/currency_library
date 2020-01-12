@@ -11,6 +11,9 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.zgq.common.base.R
 
+/**
+ * 图片加载管理类
+ */
 class ZGlide{
 
     companion object{

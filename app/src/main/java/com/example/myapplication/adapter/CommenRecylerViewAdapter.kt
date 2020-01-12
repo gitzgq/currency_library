@@ -18,18 +18,18 @@ class CommenRecylerViewAdapter() : RecyclerView.Adapter<CommenRecylerViewAdapter
     private var contentView : View? = null
 
     private var context : Context? = null
-    private var datas = mutableListOf<Any>()
+    private var datas = ArrayList<Any>()
     private var more : Boolean = false
     private lateinit var inflater: LayoutInflater
     private lateinit var templateMoreView : ZTemplateMoreView
 
-    constructor(context : Context, datas : MutableList<Any>) : this() {
+    constructor(context : Context, datas : ArrayList<Any>) : this() {
         this.context = context
         this.datas = datas
         this.inflater = LayoutInflater.from(context)
     }
 
-    constructor(context : Context, datas : MutableList<Any>, more : Boolean) : this() {
+    constructor(context : Context, datas : ArrayList<Any>, more : Boolean) : this() {
         this.context = context
         this.datas = datas
         this.more = more

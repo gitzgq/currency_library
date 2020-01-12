@@ -8,9 +8,9 @@ import com.zgq.common.base.other.ZLog
 import com.zgq.common.base.view.ZRecyclerView
 import com.zgq.common.base.view.template.ZTemplateMoreView
 
-class CtyRecyclerView : ZRecyclerView{
+class CtyRecyclerView : ZRecyclerView {
 
-    companion object{
+    companion object {
         const val PAGE_SIZE = 10
     }
 
@@ -23,24 +23,18 @@ class CtyRecyclerView : ZRecyclerView{
     // 自己定义的adapter
     private var adapter: CommenRecylerViewAdapter? = null
 
-    /**
-     * 加载成功，设置有无更多数据（默认为true还有更多数据）
-     */
-    fun finishLoadMore() {
-        finishLoadMore(true)
+    init {
+        adapter = adapter()
     }
 
     /**
-     * 加载成功，设置有无更多数据
+     * 加载完成，设置有无更多数据
      * @param isLoadingData  true:有数据，显示加载样式  false:无数据，显示无数据样式
      */
     fun finishLoadMore(isLoadingData: Boolean) {
         this.isLoadingData = isLoadingData
-        if (null == adapter) {
-            adapter = adapter()
-        }
-        if (null != adapter) {
-            adapter?.setStatus(if (isLoadingData) ZTemplateMoreView.LOAD else ZTemplateMoreView.EMPTY)
+        adapter?.let {
+            it.setStatus(if (isLoadingData) ZTemplateMoreView.LOAD else ZTemplateMoreView.EMPTY)
         }
     }
 
@@ -82,21 +76,19 @@ class CtyRecyclerView : ZRecyclerView{
         } else {// 第二页及以上的数据
             this.isLoadingData = dataSize >= 10
         }
-        if (null == adapter) {
-            adapter = adapter()
-        }
-        if (null != adapter) {
-            adapter?.setStatus(if (isLoadingData) ZTemplateMoreView.LOAD else ZTemplateMoreView.EMPTY)
+        adapter?.let {
+            // 修改底部加载更多样式
+            it.setStatus(if (isLoadingData) ZTemplateMoreView.LOAD else ZTemplateMoreView.EMPTY)
             if (pageIndex == 1) {// 第一页，调用刷新的全部数据的方法
                 this.scrollToPosition(0)
-                adapter?.notifyDataSetChanged()
+                it.notifyDataSetChanged()
                 return
             }
             if (slipSize > 0) {// 拼接的数据大于0  说明加载更多的数据是自己处理添加到集合中的
                 dataSize = slipSize
             }
             if (dataSize > 0 || slipSize > 0) {// 不是第一页的时候，调用插入多条数据的刷新方法
-                adapter?.notifyItemRangeInserted(oldSize, dataSize)
+                it.notifyItemRangeInserted(oldSize, dataSize)
             }
         }
     }
@@ -106,20 +98,17 @@ class CtyRecyclerView : ZRecyclerView{
      */
     fun finishLoadError() {
         this.isLoadingData = false
-        if (null == adapter) {
-            adapter = adapter()
-        }
-        if (null != adapter) {
-            adapter?.setStatus(ZTemplateMoreView.ERROR)
-            val footerView = adapter?.getTemplateMoreView()
-            if (null != footerView) {
-                footerView?.setOnClickListener {
-                    if (null != loadMoreListener) {
+        adapter?.let {
+            // 修改底部加载更对的UI样式
+            it.setStatus(ZTemplateMoreView.ERROR)
+            it.getTemplateMoreView()?.let { footerView ->
+                footerView?.setOnClickListener { it1 ->
+                    loadMoreListener?.let { loadMoreListener ->
                         // 显示加载样式
-                        adapter?.setStatus(ZTemplateMoreView.LOAD)
-                        loadMoreListener?.onCtyLoadErrorClick()
+                        it.setStatus(ZTemplateMoreView.LOAD)
+                        loadMoreListener.onCtyLoadErrorClick()
                         isLoadingData = false
-                        footerView?.setOnClickListener(null)
+                        footerView.setOnClickListener(null)
                     }
                 }
             }
@@ -140,11 +129,8 @@ class CtyRecyclerView : ZRecyclerView{
      */
     fun finishLoadHide(showHide: Boolean) {
         this.isLoadingData = !showHide
-        if (null == adapter) {
-            adapter = adapter()
-        }
-        if (null != adapter) {
-            adapter?.setStatus(ZTemplateMoreView.HIDE)
+        adapter?.let {
+            it.setStatus(ZTemplateMoreView.HIDE)
         }
     }
 
@@ -153,9 +139,12 @@ class CtyRecyclerView : ZRecyclerView{
      * @return
      */
     private fun adapter(): CommenRecylerViewAdapter? {
-        return if (null != getAdapter() && getAdapter() is CommenRecylerViewAdapter) {
-            getAdapter() as CommenRecylerViewAdapter
-        } else null
+        getAdapter()?.let {
+            if (it is CommenRecylerViewAdapter) {
+                return@let
+            }
+        }
+        return null
     }
 
 }

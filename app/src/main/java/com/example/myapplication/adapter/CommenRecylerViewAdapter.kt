@@ -89,9 +89,7 @@ class CommenRecylerViewAdapter() : RecyclerView.Adapter<CommenRecylerViewAdapter
      * @param status
      */
     fun setStatus(status: Int) {
-        ZLog.e("进到这了33333")
         if (null != templateMoreView) {
-            ZLog.e("进到这了444444")
             this.templateMoreView.setStatus(status)
         }
     }

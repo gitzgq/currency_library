@@ -5,7 +5,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.myapplication.R
 import com.example.myapplication.adapter.CommenRecylerViewAdapter
 import com.example.myapplication.mvp.presenter.RecyclerViewPresenter
-import com.zgq.common.base.mvp.ZBaseActivity
+import com.zgq.common.base.base_mvp.ZBaseActivity
 import com.zgq.common.base.other.ZLog
 import com.zgq.common.base.view.ZRecyclerView
 import kotlinx.android.synthetic.main.activity_recyclerview_layout.*

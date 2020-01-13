@@ -4,8 +4,8 @@ import com.example.myapplication.bean.GoodsListBean
 import com.example.myapplication.mvp.presenter.RecyclerViewPresenter
 import com.example.myapplication.net.request.RequestUtil
 import com.example.myapplication.net.response.BaseObserver
-import com.zgq.common.base.mvp.ZBaseModel
-import com.zgq.common.base.mvp.ZBasePresenter
+import com.zgq.common.base.base_mvp.ZBaseModel
+import com.zgq.common.base.base_mvp.ZBasePresenter
 import io.reactivex.disposables.Disposable
 
 class RecyclerViewModel(basePresenter: ZBasePresenter<*>): ZBaseModel(basePresenter) {

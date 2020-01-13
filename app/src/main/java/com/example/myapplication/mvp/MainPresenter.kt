@@ -1,7 +1,7 @@
 
 import com.example.myapplication.mvp.MainActivity
-import com.zgq.common.base.mvp.ZBasePresenter
-import com.zgq.common.base.mvp.ZBaseView
+import com.zgq.common.base.base_mvp.ZBasePresenter
+import com.zgq.common.base.base_mvp.ZBaseView
 
 class MainPresenter(view : ZBaseView) : ZBasePresenter<MainActivity>(view){
 

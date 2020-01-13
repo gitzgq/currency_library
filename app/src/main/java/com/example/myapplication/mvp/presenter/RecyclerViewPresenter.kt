@@ -2,8 +2,8 @@ package com.example.myapplication.mvp.presenter
 
 import com.example.myapplication.mvp.model.RecyclerViewModel
 import com.example.myapplication.mvp.view.RecyclerViewActivity
-import com.zgq.common.base.mvp.ZBasePresenter
-import com.zgq.common.base.mvp.ZBaseView
+import com.zgq.common.base.base_mvp.ZBasePresenter
+import com.zgq.common.base.base_mvp.ZBaseView
 
 class RecyclerViewPresenter(view: ZBaseView): ZBasePresenter<RecyclerViewActivity>(view) {
 

@@ -1,4 +1,4 @@
-package com.zgq.common.base.mvp
+package com.zgq.common.base.base_mvp
 
 interface ZBaseView {
     /** 初始化数据、view等 */

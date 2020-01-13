@@ -1,4 +1,4 @@
-package com.zgq.common.base.mvp
+package com.zgq.common.base.base_mvp
 
 import java.lang.ref.WeakReference
 

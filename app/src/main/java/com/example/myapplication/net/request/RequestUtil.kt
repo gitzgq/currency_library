@@ -2,6 +2,7 @@ package com.example.myapplication.net.request
 
 import com.example.myapplication.net.response.BaseObserver
 import com.example.myapplication.app.ConfigUtil
+import com.example.myapplication.bean.GoodsListBean
 import com.example.myapplication.bean.Template101Bean
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -15,6 +16,16 @@ object RequestUtil {
     fun loadHomeBanner(observer: BaseObserver<ArrayList<Template101Bean>>) {
         ConfigUtil.service
                 .loadBanner()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer)
+
+    }
+
+    /** 商品列表 */
+    fun loadGoodsList(pageIndex: Int, observer: BaseObserver<GoodsListBean>) {
+        ConfigUtil.service
+                .loadGoodsList(ZRequestBody.loadGoodsList(pageIndex))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer)

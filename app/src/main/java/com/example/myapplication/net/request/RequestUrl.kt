@@ -5,8 +5,10 @@ package com.example.myapplication.net.request
  */
 object RequestUrl{
 
-    const val BASE_URL = "http://newapi.autocloudpro.com/test2/"
+    const val BASE_URL = "http://newapi.autocloudpro.com/"
 
     /** 首页-banner  */
     const val URL_HOME_PAGE_BANNER = "Home/Banner"
+    /** 商品列表  */
+    const val URL_GOODS_LIST = "Commodity/List"
 }

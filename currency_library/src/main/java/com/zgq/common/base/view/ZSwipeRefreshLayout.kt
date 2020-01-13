@@ -14,10 +14,6 @@ import kotlin.math.abs
  */
 class ZSwipeRefreshLayout : SwipeRefreshLayout {
 
-    private var mTouchSlop: Int = 0
-    // 上一次触摸时的X坐标
-    private var mPrevX: Float = 0.toFloat()
-
     private var mContext: Context? = null
 
     constructor(context: Context) : super(context) {
@@ -32,14 +28,12 @@ class ZSwipeRefreshLayout : SwipeRefreshLayout {
 
 
     private fun init() {
-        // 触发移动事件的最短距离，如果小于这个距离就不触发移动控件
-        mTouchSlop = ViewConfiguration.get(mContext).scaledTouchSlop
         setRefreshColor(R.color.refresh_color)
     }
 
     @SuppressLint("ResourceAsColor")
     fun setRefreshColor(color: Int) {
-        this.setColorSchemeColors(color)
+        this.setColorSchemeResources(color)
     }
 
     /**
@@ -57,23 +51,6 @@ class ZSwipeRefreshLayout : SwipeRefreshLayout {
      */
     fun setCtyEnabled(enabled: Boolean) {
         isEnabled = enabled
-    }
-
-    override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
-        when (event.action) {
-            // 按下
-            MotionEvent.ACTION_DOWN -> mPrevX = event.x
-            // 移动
-            MotionEvent.ACTION_MOVE -> {
-                val eventX = event.x
-                val xDiff = abs(eventX - mPrevX)
-                // 增加60的容差，让下拉刷新在竖直滑动时就可以触发
-                if (xDiff > mTouchSlop + 60) {
-                    return false
-                }
-            }
-        }
-        return super.onInterceptTouchEvent(event)
     }
 
 }

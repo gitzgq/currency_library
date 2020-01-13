@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import com.example.myapplication.R
 import com.example.myapplication.bean.Template101Bean
+import com.example.myapplication.bean.Template102Bean
 import com.zgq.common.base.other.ZLog
 
 class TemplateUtil {
@@ -15,6 +16,8 @@ class TemplateUtil {
         const val T_100 : Int = 100
         /** 模板ID - 测试 */
         const val T_101 : Int = 101
+        /** 模板ID - 商品列表 */
+        const val T_102 : Int = 102
     }
 
 
@@ -28,6 +31,7 @@ class TemplateUtil {
         }
         when(any){
             any as? Template101Bean -> return any.templateId
+            any as? Template102Bean -> return any.templateId
         }
         return 0
     }
@@ -45,6 +49,7 @@ class TemplateUtil {
         when(itemType){
             T_100 -> return getTemplateView(R.layout.template_more_view_layout, inflater)
             T_101 -> return getTemplateView(R.layout.template_101_view_layout, inflater)
+            T_102 -> return getTemplateView(R.layout.template_102_view_layout, inflater)
         }
         return View(context)
     }

@@ -17,7 +17,7 @@ open abstract class ZBaseActivity<P : ZBasePresenter<*>> : AppCompatActivity(), 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(statusIsInit()){
+        if (statusIsInit()) {
             setStatusStyle()
         }
         setContentView(contentView)
@@ -25,13 +25,13 @@ open abstract class ZBaseActivity<P : ZBasePresenter<*>> : AppCompatActivity(), 
         initView()
 
         // true：注册EventBus  默认false
-        if(registerEventBus()){
+        if (registerEventBus()) {
             ZEventBus.instence.register(this)
         }
     }
 
     /** 获取需要加载的布局文件 */
-    abstract val contentView : Int
+    abstract val contentView: Int
 
     /** 获取Presenter实例 */
     abstract val getPresenter: P
@@ -57,78 +57,77 @@ open abstract class ZBaseActivity<P : ZBasePresenter<*>> : AppCompatActivity(), 
     }
 
     /** 完全沉浸 */
-    val TRANSPAREN : Int = -1
+    val TRANSPAREN: Int = -1
     /** 设置标题颜色 */
-    val COLOR : Int = -2
+    val COLOR: Int = -2
 
     /** 返回不同的类型 */
-    open fun statusType() : Int{
+    open fun statusType(): Int {
         return COLOR
     }
 
     /** 返回类型为COLOR时， 返回颜色值 */
-    open fun statusColor() : Int{
+    open fun statusColor(): Int {
         return ZImmersionBar.statusColor
     }
 
     /** 是否使用沉浸式 */
-    open fun statusIsInit() : Boolean{
+    open fun statusIsInit(): Boolean {
         return true
     }
 
     /** 是否修改状态栏文字颜色为深色 */
-    open fun statusTextColor() : Boolean{
+    open fun statusTextColor(): Boolean {
         return false
     }
 
     /** 是否监听键盘 */
-    open fun isMonitorKeyboard() : Boolean{
+    open fun isMonitorKeyboard(): Boolean {
         return false
     }
 
     /** 监听键盘回调方法 true：显示  false：消失 */
-    open fun monitorKeyboard(isPopup: Boolean){}
+    open fun monitorKeyboard(isPopup: Boolean) {}
 
 
     // 设置沉浸式状态栏
     private fun setStatusStyle() {
-        val immersionBar = ImmersionBar.with(this)
-        immersionBar?.let {
-                if (statusType() == TRANSPAREN) {
-                    // 直接沉浸式（顶部的标题直接沉浸到状态栏）
-                    it.transparentStatusBar()
-                } else {
-                    // 设置状态栏的颜色
-                    it.fitsSystemWindows(true)
-                    it.statusBarColor(statusColor())
+        ImmersionBar.with(this)?.let {
+            if (statusType() == TRANSPAREN) {
+                // 直接沉浸式（顶部的标题直接沉浸到状态栏）
+                it.transparentStatusBar()
+            } else {
+                // 设置状态栏的颜色
+                it.fitsSystemWindows(true)
+                it.statusBarColor(statusColor())
+            }
+            // 当状态栏背景为亮色，手机不支持修改状态栏的字体颜色时调用此方法
+            if (statusTextColor()) {
+                it.statusBarDarkFont(true)
+            }
+            // 监听键盘
+            if (isMonitorKeyboard()) {
+                it.keyboardEnable(true)
+                it.setOnKeyboardListener { isPopup, _ ->
+                    monitorKeyboard(isPopup)
                 }
-                // 当状态栏背景为亮色，手机不支持修改状态栏的字体颜色时调用此方法
-                if (statusTextColor()) {
-                    it.statusBarDarkFont(true)
-                }
-                // 监听键盘
-                if (isMonitorKeyboard()) {
-                    it.keyboardEnable(true)
-                    it.setOnKeyboardListener { isPopup, _ ->
-                        monitorKeyboard(isPopup)
-                    }
-                }
-                it.init()
+            }
+            it.init()
         }
     }
 
     /*** 是否使用EventBus true：使用   默认false */
-    open fun registerEventBus() : Boolean{
+    open fun registerEventBus(): Boolean {
         return false
     }
 
     /** 发送普通事件 */
-    open fun post(any: Any?){
+    open fun post(any: Any?) {
         ZEventBus.instence.post(any)
     }
 
     /** 发送粘性事件 */
-    open fun postSticky(any: Any?){
+    open fun postSticky(any: Any?) {
         ZEventBus.instence.postSticky(any)
     }
 
@@ -140,7 +139,7 @@ open abstract class ZBaseActivity<P : ZBasePresenter<*>> : AppCompatActivity(), 
     override fun onDestroy() {
         mPresenter?.clear()
         // true：注册EventBus  默认false
-        if(registerEventBus()){
+        if (registerEventBus()) {
             ZEventBus.instence.unregister(this)
         }
         super.onDestroy()

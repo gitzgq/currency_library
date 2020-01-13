@@ -10,4 +10,6 @@ class ZBaseBean<T>{
     var list: T? = null
     var model: T? = null
     var imageUri: T? = null
+    // 自定义空数据字段
+    var customEmptyData: T? = null
 }

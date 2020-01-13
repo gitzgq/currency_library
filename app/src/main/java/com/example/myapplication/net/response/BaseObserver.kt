@@ -1,6 +1,7 @@
 package com.example.myapplication.net.response
 
 import com.example.myapplication.bean.ZBaseBean
+import com.zgq.common.base.other.ZLog
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 
@@ -24,45 +25,48 @@ abstract class BaseObserver<T>: Observer<ZBaseBean<T>>{
                 ResultCodeUtil.CODE_0 ->{
                     t.data?.let {
                         onSuccess(it, code)
-                        return@let
+                        return
                     }
                     t.model?.let {
                         onSuccess(it, code)
-                        return@let
+                        return
                     }
                     t.list?.let {
                         onSuccess(it, code)
-                        return@let
+                        return
                     }
                     t.imageUri?.let {
                         onSuccess(it, code)
-                        return@let
+                        return
                     }
-                    // code成功但是返回的 data、model、list、imageUri 是空
-                    onEmptyData(code, t.message)
+                    t.customEmptyData?.let {
+                        onSuccess(it, code)
+                        return
+                    }
+                    ZLog.e("网络请求下发成功code = $code")
                 }
                 // 失败
                 else ->{
+                    ZLog.e("网络请求下发错误code = $code")
                     onError(code, t.message)
                 }
             }
-            return@let
+            return
         }
+        ZLog.e("网络请求下发数据异常 = -1")
         onError(-1, "获取数据异常")
     }
 
     override fun onError(e: Throwable) {
+        ZLog.e("网络请求异常 = ${e.message}")
         onError(-2, e.message)
     }
 
     /** 获取Disposable对象 */
     abstract fun onDisposable(d: Disposable)
 
-    /** 成功-有数据实体 */
+    /** 成功 */
     abstract fun onSuccess(t: T, code: Int)
-
-    /** 成功-没有数据实体 */
-    abstract fun onEmptyData(code: Int, msg: String?)
 
     /** 失败 */
     abstract fun onError(code: Int, msg: String?)

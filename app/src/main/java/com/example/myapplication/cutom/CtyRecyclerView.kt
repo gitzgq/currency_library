@@ -20,20 +20,13 @@ class CtyRecyclerView : ZRecyclerView {
 
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
-    // 自己定义的adapter
-    private var adapter: CommenRecylerViewAdapter? = null
-
-    init {
-        adapter = adapter()
-    }
-
     /**
      * 加载完成，设置有无更多数据
      * @param isLoadingData  true:有数据，显示加载样式  false:无数据，显示无数据样式
      */
     fun finishLoadMore(isLoadingData: Boolean) {
         this.isLoadingData = isLoadingData
-        adapter?.let {
+        adapter()?.let {
             it.setStatus(if (isLoadingData) ZTemplateMoreView.LOAD else ZTemplateMoreView.EMPTY)
         }
     }
@@ -68,15 +61,14 @@ class CtyRecyclerView : ZRecyclerView {
      * @param pageSize  每页加载的数据个数
      */
     fun finishLoadMore(oldSize: Int, dataSize: Int, slipSize: Int, pageIndex: Int, pageSize: Int) {
-        var dataSize = dataSize
-        if (pageIndex == 1) {// 第一页数据
-            if (dataSize <= 0) {
-                finishLoadHide()
-            } else this.isLoadingData = dataSize >= pageSize
-        } else {// 第二页及以上的数据
-            this.isLoadingData = dataSize >= 10
+        if (pageIndex == 1 && dataSize <= 0) {
+            // 第一页数据却数量<=0
+            finishLoadHide()
+        } else {
+            // 非第一页数据或者数量>0
+            this.isLoadingData = dataSize >= pageSize
         }
-        adapter?.let {
+        adapter()?.let {
             // 修改底部加载更多样式
             it.setStatus(if (isLoadingData) ZTemplateMoreView.LOAD else ZTemplateMoreView.EMPTY)
             if (pageIndex == 1) {// 第一页，调用刷新的全部数据的方法
@@ -84,10 +76,11 @@ class CtyRecyclerView : ZRecyclerView {
                 it.notifyDataSetChanged()
                 return
             }
-            if (slipSize > 0) {// 拼接的数据大于0  说明加载更多的数据是自己处理添加到集合中的
-                dataSize = slipSize
-            }
-            if (dataSize > 0 || slipSize > 0) {// 不是第一页的时候，调用插入多条数据的刷新方法
+            if (slipSize > 0) {
+                // 拼接的数据数量大于0，说明加载更多的数据是自己处理添加到集合中的，刷新数据的数量为slipSize
+                it.notifyItemRangeInserted(oldSize, slipSize)
+            } else if (dataSize > 0) {
+                // 拼接的数据数量小于0，调用插入多条数据的刷新方法，刷新数据的数量为dataSize
                 it.notifyItemRangeInserted(oldSize, dataSize)
             }
         }
@@ -95,14 +88,29 @@ class CtyRecyclerView : ZRecyclerView {
 
     /**
      * 加载失败，调用此方法
+     * 默认页面大于1，显示错误UI样式
+     *
      */
     fun finishLoadError() {
+        finishLoadError(2)
+    }
+
+    /**
+     * 加载失败，调用此方法
+     * pageIndex 页面 大于1显示错误UI样式  等于1 隐藏底部UI样式
+     *
+     */
+    fun finishLoadError(pageIndex: Int) {
+        if (pageIndex == 1) {
+            finishLoadHide()
+            return
+        }
         this.isLoadingData = false
-        adapter?.let {
+        adapter()?.let {
             // 修改底部加载更对的UI样式
             it.setStatus(ZTemplateMoreView.ERROR)
             it.getTemplateMoreView()?.let { footerView ->
-                footerView?.setOnClickListener { it1 ->
+                footerView.setOnClickListener { it1 ->
                     loadMoreListener?.let { loadMoreListener ->
                         // 显示加载样式
                         it.setStatus(ZTemplateMoreView.LOAD)
@@ -129,7 +137,7 @@ class CtyRecyclerView : ZRecyclerView {
      */
     fun finishLoadHide(showHide: Boolean) {
         this.isLoadingData = !showHide
-        adapter?.let {
+        adapter()?.let {
             it.setStatus(ZTemplateMoreView.HIDE)
         }
     }
@@ -139,9 +147,9 @@ class CtyRecyclerView : ZRecyclerView {
      * @return
      */
     private fun adapter(): CommenRecylerViewAdapter? {
-        getAdapter()?.let {
+        adapter?.let {
             if (it is CommenRecylerViewAdapter) {
-                return@let
+                return it
             }
         }
         return null

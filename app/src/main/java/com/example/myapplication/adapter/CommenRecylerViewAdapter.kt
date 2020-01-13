@@ -41,7 +41,7 @@ class CommenRecylerViewAdapter() : RecyclerView.Adapter<CommenRecylerViewAdapter
         if(more){
             return datas.size + 1
         }
-        return datas?.size
+        return datas.size
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -49,12 +49,14 @@ class CommenRecylerViewAdapter() : RecyclerView.Adapter<CommenRecylerViewAdapter
             return 0
         }
         if(position > 0 && position == datas.size && more){// 返回加载更多的模板id
+            ZLog.e("加载更多 $position")
             return TemplateUtil.T_100
         }
-        return TemplateUtil.instence.getTemplateId(datas?.get(position))
+        return TemplateUtil.instence.getTemplateId(datas[position])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
+        ZLog.e("viewType = $viewType")
         contentView = if(more && viewType == TemplateUtil.T_100){
             templateMoreView
         }else{
@@ -89,8 +91,11 @@ class CommenRecylerViewAdapter() : RecyclerView.Adapter<CommenRecylerViewAdapter
      * @param status
      */
     fun setStatus(status: Int) {
-        if (null != templateMoreView) {
-            this.templateMoreView.setStatus(status)
+        templateMoreView?.let {
+            it.setStatus(status)
+//            if(datas.isNotEmpty()){
+//                notifyItemChanged(datas.size + 1)
+//            }
         }
     }
 

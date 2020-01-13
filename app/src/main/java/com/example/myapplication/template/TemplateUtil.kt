@@ -39,13 +39,7 @@ class TemplateUtil {
     /**
      * 获取模板id对应的模板View
      */
-    fun getContentView(context: Context?, itemType : Int, inflater : LayoutInflater?) : View? {
-        if(null == context){
-            return null
-        }
-        if(null == inflater){
-            return View(context)
-        }
+    fun getContentView(context: Context, itemType : Int, inflater : LayoutInflater) : View {
         when(itemType){
             T_100 -> return getTemplateView(R.layout.template_more_view_layout, inflater)
             T_101 -> return getTemplateView(R.layout.template_101_view_layout, inflater)
@@ -54,10 +48,7 @@ class TemplateUtil {
         return View(context)
     }
 
-    private fun getTemplateView(viewId : Int, inflater: LayoutInflater) : View?{
-        if(null == inflater){
-            return null
-        }
+    private fun getTemplateView(viewId : Int, inflater: LayoutInflater) : View{
         return inflater.inflate(viewId, null)
     }
 }

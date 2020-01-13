@@ -10,6 +10,9 @@ import com.zgq.common.base.other.ZLog
 import com.zgq.common.base.view.ZRecyclerView
 import kotlinx.android.synthetic.main.activity_recyclerview_layout.*
 
+/**
+ * 下拉刷新、加载更多
+ */
 class RecyclerViewActivity: ZBaseActivity<RecyclerViewPresenter>(), ZRecyclerView.OnZLoadMoreListener, SwipeRefreshLayout.OnRefreshListener{
 
     override val contentView: Int
@@ -31,11 +34,13 @@ class RecyclerViewActivity: ZBaseActivity<RecyclerViewPresenter>(), ZRecyclerVie
         loadGoodsList()
     }
 
+    /** 请求-商品列表 */
     fun loadGoodsList(){
         showLoading()
         mPresenter?.loadGoodsList()
     }
 
+    /** 列表数据获取成功 */
     fun onSuccess(oldSize: Int, dataSize: Int){
         swipeRefresh.hindRefreshing()
         if(pageIndex == 1 && dataSize <= 0){
@@ -49,6 +54,7 @@ class RecyclerViewActivity: ZBaseActivity<RecyclerViewPresenter>(), ZRecyclerVie
 
     }
 
+    /** 列表数据获取失败 */
     fun onError(){
         swipeRefresh.hindRefreshing()
         if(pageIndex == 1){
@@ -58,31 +64,38 @@ class RecyclerViewActivity: ZBaseActivity<RecyclerViewPresenter>(), ZRecyclerVie
         mRecyclerView.finishLoadError(pageIndex)
     }
 
+    // 显示loading布局
     override fun showLoading() {
 
     }
 
+    // 显示列表布局
     override fun showData() {
 
     }
 
+    // 显示无数据布局
     override fun showEmpty() {
 
     }
 
+    // 显示错误布局
     override fun showError() {
 
     }
 
+    /** 加载更多回调 */
     override fun onCtyLoadMore() {
         pageIndex++
         loadGoodsList()
     }
 
+    /** 加载更多时异常，点击重试回调 */
     override fun onCtyLoadErrorClick() {
         loadGoodsList()
     }
 
+    /** 下拉刷新 */
     override fun onRefresh() {
         pageIndex = 1
         loadGoodsList()

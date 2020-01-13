@@ -15,13 +15,15 @@ import com.zgq.common.base.view.template.ZTemplateMoreView
 
 class CommenRecylerViewAdapter() : RecyclerView.Adapter<CommenRecylerViewAdapter.MyHolder>(){
 
-    private var contentView : View? = null
+    private lateinit var contentView : View
 
-    private var context : Context? = null
-    private var datas = ArrayList<Any>()
-    private var more : Boolean = false
+    private lateinit var context : Context
+    private lateinit var datas : ArrayList<Any>
     private lateinit var inflater: LayoutInflater
+    /** 加载更多布局View */
     private lateinit var templateMoreView : ZTemplateMoreView
+    /** 是否显示加载更多布局 true：显示  false：不显示  默认为false不显示 */
+    private var more : Boolean = false
 
     constructor(context : Context, datas : ArrayList<Any>) : this() {
         this.context = context
@@ -45,41 +47,45 @@ class CommenRecylerViewAdapter() : RecyclerView.Adapter<CommenRecylerViewAdapter
     }
 
     override fun getItemViewType(position: Int): Int {
-        if(null == datas || datas.isEmpty()){
+        if(datas.isEmpty()){
             return 0
         }
         if(position > 0 && position == datas.size && more){// 返回加载更多的模板id
-            ZLog.e("加载更多 $position")
             return TemplateUtil.T_100
         }
         return TemplateUtil.instence.getTemplateId(datas[position])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
-        ZLog.e("viewType = $viewType")
-        contentView = if(more && viewType == TemplateUtil.T_100){
-            templateMoreView
-        }else{
-            TemplateUtil.instence.getContentView(this.context, viewType, inflater)
+        when(viewType){
+            // 加载更多模板id
+            TemplateUtil.T_100 ->{
+                if(more){
+                    contentView = templateMoreView
+                }
+            }
+            // 其他模板id
+            else ->{
+                contentView = TemplateUtil.instence.getContentView(this.context, viewType, inflater)
+            }
         }
-        return MyHolder(contentView?: View(this.context))
+        return MyHolder(contentView)
     }
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
-        if(null == holder?.itemView){
-            return
+        holder.itemView?.let {
+            if(it is ZTemplateMoreView){// 加载更多不往下执行
+                return
+            }
+            if(position >= datas.size){
+                return
+            }
+            // 刷新item数据
+            if(it is ZBaseTemplateI){
+                it.setData(datas[position], position, null)
+            }
         }
-        if(holder?.itemView is ZTemplateMoreView){// 加载更多不往下执行
-            return
-        }
-        if(position >= datas?.size){
-            return
-        }
-        val data : Any = datas?.get(position)
-        // 刷新item数据
-        if(holder?.itemView is ZBaseTemplateI){
-            holder?.itemView.setData(data, position, null)
-        }
+
     }
 
     class MyHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -93,9 +99,6 @@ class CommenRecylerViewAdapter() : RecyclerView.Adapter<CommenRecylerViewAdapter
     fun setStatus(status: Int) {
         templateMoreView?.let {
             it.setStatus(status)
-//            if(datas.isNotEmpty()){
-//                notifyItemChanged(datas.size + 1)
-//            }
         }
     }
 
@@ -108,12 +111,14 @@ class CommenRecylerViewAdapter() : RecyclerView.Adapter<CommenRecylerViewAdapter
         if (!more) {// 不添加更多时，不执行一下操作
             return
         }
-        if (holder?.itemView != null && holder.itemView is ZTemplateMoreView) {
-            val layoutParams = holder.itemView.layoutParams
-            if (null != layoutParams && layoutParams is StaggeredGridLayoutManager.LayoutParams) {
-                layoutParams.isFullSpan = true
+        holder.itemView?.let {
+            if(it is ZTemplateMoreView){
+                it.layoutParams?.let { layoutParams ->
+                    if(layoutParams is StaggeredGridLayoutManager.LayoutParams){
+                        layoutParams.isFullSpan = true
+                    }
+                }
             }
-
         }
     }
 
@@ -122,13 +127,15 @@ class CommenRecylerViewAdapter() : RecyclerView.Adapter<CommenRecylerViewAdapter
         if (!more) {// 不添加更多时，不执行一下操作
             return
         }
-        val manager = recyclerView.layoutManager
-        if (manager is GridLayoutManager) {
-            manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    return if (null != datas && datas.size > 0 && position == datas.size) {
-                        manager.spanCount
-                    } else 1
+        recyclerView.layoutManager?.let {
+            if(it is GridLayoutManager){
+                it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        val size: Int = datas.size
+                        return if (size > 0 && position == size) {
+                            it.spanCount
+                        } else 1
+                    }
                 }
             }
         }

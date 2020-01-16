@@ -9,7 +9,7 @@ open class ZBasePresenter<V : ZBaseView>(view: ZBaseView) {
 
     private val weakReference: WeakReference<*> = WeakReference(view)
 
-    open fun getView(): V? {
+    open fun getView(): V {
         return weakReference.get() as V
     }
 

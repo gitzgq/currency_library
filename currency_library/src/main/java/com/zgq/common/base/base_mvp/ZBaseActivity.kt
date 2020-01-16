@@ -10,7 +10,7 @@ import com.zgq.common.base.other.ZToast
 /**
  * Activity的基类
  */
-open abstract class ZBaseActivity<P : ZBasePresenter<*>> : AppCompatActivity(), ZBaseView {
+abstract class ZBaseActivity<P : ZBasePresenter<*>> : AppCompatActivity(), ZBaseView {
 
     /** Presenter */
     var mPresenter: P? = null

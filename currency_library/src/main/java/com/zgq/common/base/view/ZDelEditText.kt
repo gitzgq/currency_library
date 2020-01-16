@@ -27,7 +27,7 @@ class ZDelEditText : AppCompatEditText, View.OnFocusChangeListener, TextWatcher 
     constructor(context : Context, attrs : AttributeSet, defStyleAttr : Int) : super(context, attrs, defStyleAttr)
 
     init {
-        delDrawable = compoundDrawables?.get(2)
+        delDrawable = compoundDrawables[2]
 
         if(null == delDrawable){
             delDrawable = resources.getDrawable(R.mipmap.img_edit_del_icon)

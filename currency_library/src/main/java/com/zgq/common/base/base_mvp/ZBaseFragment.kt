@@ -11,10 +11,10 @@ import com.zgq.common.base.other.ZEventBus
 /**
  * Fragment的基类
  */
-open abstract class ZBaseFragment<P : ZBasePresenter<*>> : Fragment(), ZBaseView {
+abstract class ZBaseFragment<P : ZBasePresenter<*>> : Fragment(), ZBaseView {
 
     /** Presenter */
-    var mPresenter: P? = null
+    lateinit var mPresenter: P
 
     var context = null
 

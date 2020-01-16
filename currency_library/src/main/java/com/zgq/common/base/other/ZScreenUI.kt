@@ -6,70 +6,61 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import com.zgq.common.base.app.ZBaseApplication
 
-object ZScreenUI{
+object ZScreenUI {
 
-    fun width(context : Context?) : Int{
-        context?.let {
-            val dm = it?.resources?.displayMetrics
-            return dm?.widthPixels?: 1080
-        }
-        return 1080
+    /** 获取屏幕得宽 */
+    fun width(context: Context): Int {
+        return context.resources.displayMetrics.widthPixels
     }
 
-    fun height(context : Context?) : Int{
-        context?.let {
-            val dm = it?.resources?.displayMetrics
-            return dm?.heightPixels?: 1920
-        }
-        return 1920
+    /** 获取屏幕得高 */
+    fun height(context: Context): Int {
+        return context.resources.displayMetrics.heightPixels
     }
 
     /**
      * dp转px
      * @param dp
      */
-    fun dpTopx(context : Context?, dp: Int): Int {
-        context?.let {
-            val scale = it?.resources?.displayMetrics?.density?: 3.0f
-            return (dp * scale).toInt()
-        }
-        return (3.0f * dp).toInt()
+    fun dpTopx(context: Context, dp: Int): Int {
+        return (context.resources.displayMetrics.density * dp).toInt()
     }
 
     /**
      * 设置view的宽
      */
-    fun setViewW(view: View?, w: Int) {
+    fun setViewW(view: View, w: Int) {
         setViewWH(view, w, -1)
     }
 
     /**
      * 设置view的高
      */
-    fun setViewH(view: View?, h: Int) {
+    fun setViewH(view: View, h: Int) {
         setViewWH(view, -1, h)
     }
 
     /**
      * 设置view的宽高
      */
-    fun setViewWH(view: View?, w: Int, h: Int) {
-        view?.let {
-            val eParams = view?.layoutParams
-            eParams?.let {it1 ->
-                if (it1 is RelativeLayout.LayoutParams || it1 is LinearLayout.LayoutParams || it1 is FrameLayout.LayoutParams
-                        || it1 is ViewGroup.LayoutParams) {
-                    if (w > 0) {
-                        it1?.width = w
-                    }
-                    if (h > 0) {
-                        it1?.height = h
-                    }
+    fun setViewWH(view: View, w: Int, h: Int) {
+        val eParams = view.layoutParams
+        when (eParams) {
+            is RelativeLayout.LayoutParams,
+            is LinearLayout.LayoutParams,
+            is FrameLayout.LayoutParams,
+            eParams -> {
+                if (w > 0) {
+                    eParams.width = w
                 }
-                it?.layoutParams = it1
+                if (h > 0) {
+                    eParams.height = h
+                }
             }
         }
+        view.layoutParams = eParams
     }
 
     /**
@@ -80,21 +71,17 @@ object ZScreenUI{
      * @param rigth
      * @param bottom
      */
-    fun setMargin(view: View?, left: Int, top: Int, rigth: Int, bottom: Int) {
+    fun setMargin(view: View, left: Int, top: Int, rigth: Int, bottom: Int) {
         if (left < 0 || top < 0 || rigth < 0 || bottom < 0) {
             return
         }
-        view?.let {
-            val eParams = it?.layoutParams
-            eParams?.let { it1 ->
-                when (it1) {
-                    is RelativeLayout.LayoutParams -> it1?.setMargins(left, top, rigth, bottom)
-                    is LinearLayout.LayoutParams -> it1?.setMargins(left, top, rigth, bottom)
-                    is FrameLayout.LayoutParams -> it1?.setMargins(left, top, rigth, bottom)
-                }
-                it?.layoutParams = it1
-            }
+        val eParams = view.layoutParams
+        when (eParams) {
+            is RelativeLayout.LayoutParams -> eParams.setMargins(left, top, rigth, bottom)
+            is LinearLayout.LayoutParams -> eParams.setMargins(left, top, rigth, bottom)
+            is FrameLayout.LayoutParams -> eParams.setMargins(left, top, rigth, bottom)
         }
+        view.layoutParams = eParams
     }
 
     /**
@@ -103,15 +90,13 @@ object ZScreenUI{
      * @param context
      * @return
      */
-    fun getStatusHeight(context: Context?): Int {
-        var result = 0
-        context?.let {
-            val res = it.resources
-            val resourceId = it.resources.getIdentifier("status_bar_height", "dimen", "android")
+    fun getStatusHeight(context: Context): Int {
+        var result = 90
+            val res = context.resources
+            val resourceId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
             if (resourceId > 0) {
                 result = res.getDimensionPixelSize(resourceId)
             }
-        }
         return result
     }
 

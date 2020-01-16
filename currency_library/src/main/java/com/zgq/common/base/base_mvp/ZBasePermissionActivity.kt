@@ -7,7 +7,7 @@ import com.zgq.common.base.other.ZToast
 /**
  * activity权限请求基类
  */
-open abstract class ZBasePermissionActivity<P : ZBasePresenter<*>> : ZBaseActivity<P>(){
+abstract class ZBasePermissionActivity<P : ZBasePresenter<*>> : ZBaseActivity<P>(){
 
     // 权限回调接口
     private var permissionCallBack : ZPermission.OnPermissionCallBack? = null

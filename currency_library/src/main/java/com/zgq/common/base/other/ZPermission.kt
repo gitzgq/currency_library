@@ -16,17 +16,17 @@ import androidx.core.content.ContextCompat
 
 object ZPermission {
 
-    val REQUEST_CODE : Int = 1000
+    val REQUEST_CODE: Int = 1000
 
     /**
      * 检查权限 有：直接返回true  否：返回false且请求权限
      */
-    fun checkPermission(context: Context?, permissions : Array<String>?, requestCode : Int) : Boolean{
-        if(null == context || context !is Activity || null == permissions || permissions.isEmpty()){
+    fun checkPermission(context: Context?, permissions: Array<String>?, requestCode: Int): Boolean {
+        if (null == context || context !is Activity || null == permissions || permissions.isEmpty()) {
             return false
         }
 
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){// 小于23 默认有权限
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {// 小于23 默认有权限
             return true
         }
 
@@ -42,12 +42,12 @@ object ZPermission {
     /**
      * 请求系统权限
      */
-    fun requestPermission(context: Context?, permissions: Array<String>?, requestCode: Int){
-        if(null == context || context !is Activity || null == permissions || permissions.isEmpty()){
+    fun requestPermission(context: Context?, permissions: Array<String>?, requestCode: Int) {
+        if (null == context || context !is Activity || null == permissions || permissions.isEmpty()) {
             return
         }
 
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return
         }
         // 请求系统权限
@@ -72,19 +72,18 @@ object ZPermission {
      * @param context
      * @param packageName   应用applicationId
      */
-    fun openAppSetting(context: Context?, packageName: String?) {
-        context?.let {
-            packageName?.let {it1 ->
-                val intent = Intent()
-                intent?.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                val uri = Uri.fromParts("package", it1, null)
-                intent?.data = uri
-                it?.startActivity(intent)
-            }
+    fun openAppSetting(context: Context, packageName: String) {
+        if (ZStringUtil.isEmpty(packageName)) {
+            return
         }
+        val intent = Intent()
+        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+        val uri = Uri.fromParts("package", packageName, null)
+        intent.data = uri
+        context.startActivity(intent)
     }
 
-    interface OnPermissionCallBack{
+    interface OnPermissionCallBack {
         fun onAgree()
     }
 

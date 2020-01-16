@@ -63,8 +63,7 @@ class ZRetrofitManager {
             }
         })
         // 设置级别最高（全部都打印）
-        httpLogger?.level =
-                if (logDebug) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+        httpLogger.level = if (logDebug) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
         return OkHttpClient()
                 .newBuilder()
                 .let {

@@ -15,9 +15,9 @@ object ZRequestBody {
      */
     fun loadGoodsList(pageIndex: Int): RequestBody{
         val obj = JSONObject()
-        ZJSONUtil.instence.put(obj, "districtId", "110105105")
-        ZJSONUtil.instence.put(obj, "pageSize", "10")
-        ZJSONUtil.instence.put(obj, "pageIndex", pageIndex)
+        ZJSONUtil.put(obj, "districtId", "110105105")
+        ZJSONUtil.put(obj, "pageSize", "10")
+        ZJSONUtil.put(obj, "pageIndex", pageIndex)
         return ZRequestParameter.instence.body(obj.toString())
     }
 

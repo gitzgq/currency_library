@@ -73,10 +73,9 @@ class ZTemplateMoreView : ZBaseRelativeTemplateView {
     }
 
     private fun cancel() {
-        if (null != timer) {
-            timer?.purge()
-            timer?.cancel()
-            timer = null
+        timer?.let {
+            it.purge()
+            it.cancel()
         }
     }
 

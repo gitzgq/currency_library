@@ -18,7 +18,7 @@ open abstract class ZBaseFragment<P : ZBasePresenter<*>> : Fragment(), ZBaseView
 
     var context = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         this.context = context as Nothing?
         mPresenter = getPresenter

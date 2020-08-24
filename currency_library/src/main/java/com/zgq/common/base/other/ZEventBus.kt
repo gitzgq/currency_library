@@ -54,4 +54,8 @@ class ZEventBus {
             EventBus.getDefault().postSticky(it)
         }
     }
+
+    fun removeAllSticky(){
+        EventBus.getDefault().removeAllStickyEvents()
+    }
 }
